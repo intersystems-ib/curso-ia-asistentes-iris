@@ -56,6 +56,10 @@ VS Code es el entorno recomendado: abre los notebooks y selecciona `.venv` como 
 
 ## Inicio rápido
 
+Si el instructor te ha asignado una máquina AWS, empieza por la
+[guía de acceso del alumno](docs/guia-acceso-aws-alumno.md) para conectar con
+VS Code y configurar tu clave OpenRouter.
+
 Empieza por el [Lab 00 · Preparar el entorno](labs/00-setup/README.md).
 Allí se distingue entre una máquina facilitada por el instructor y una
 instalación en tu equipo. La configuración de `.env`, Docker, Python y los

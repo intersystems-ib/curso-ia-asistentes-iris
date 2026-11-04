@@ -22,6 +22,7 @@
     "docker-compose.yml",
     "docs/criterios-proyecto.md",
     "docs/entorno-alumno.md",
+    "docs/guia-acceso-aws-alumno.md",
     "docs/openrouter.md",
     "iris.script",
     "labs/00-setup/README.md",

@@ -138,15 +138,18 @@ Esta parte se ejecuta desde terminal, sin instalar extensiones de VS Code.
 
 ### Preparar una vez
 
-El instructor deja instalada la versión comprobada de OpenCode. En una máquina
-que aún no la tenga, con npm disponible:
+En la máquina preparada por el instructor, OpenCode ya está instalado.
+Comprueba la versión desde la terminal de esa máquina:
 
 ```bash
-npm install -g opencode-ai@1.19.5
 opencode --version
 ```
 
-Guarda tu clave en `OPENROUTER_API_KEY` del `.env` local, igual que en los labs
+La versión comprobada para el curso es `1.19.5`. No necesitas instalar ni
+actualizar OpenCode durante el lab. Si el comando no existe o muestra otra
+versión, avisa al instructor para revisar la preparación del entorno.
+
+Guarda tu clave en `OPENROUTER_API_KEY` del `.env` de la máquina del curso, igual que en los labs
 anteriores. `OPENROUTER_MODEL` selecciona el modelo. El predeterminado sigue
 siendo `openai/gpt-oss-20b`. Para esta consulta el cliente lee `.env` directamente:
 si sólo cambias la clave del cliente, no necesitas recrear IRIS.
@@ -202,6 +205,112 @@ en su resultado. Las herramientas son las mismas que probaste sin LLM.
 
 La configuración usa las opciones documentadas de [OpenCode CLI](https://opencode.ai/docs/cli/),
 [MCP](https://opencode.ai/docs/mcp-servers/) y [permisos](https://opencode.ai/docs/permissions/).
+
+### Opcional: usar directamente los comandos de OpenCode
+
+Puedes repetir la consulta sin el lanzador Python. Ejecuta los comandos en la
+máquina del curso, desde `/home/ubuntu/curso-ia-asistentes-iris` si utilizas EC2.
+IRIS debe estar en ejecución y el endpoint MCP instalado según los pasos anteriores.
+
+**Configura OpenRouter una vez:**
+
+```bash
+opencode auth login
+```
+
+Selecciona **OpenRouter** e introduce tu clave individual. OpenCode la guarda
+en `~/.local/share/opencode/auth.json`, fuera del repo. El lanzador Python
+anterior sigue utilizando la clave del `.env`. Si cambias una de estas claves,
+comprueba qué configuración usa el cliente que estás ejecutando.
+
+**Registra el MCP una vez:**
+
+```bash
+opencode mcp add
+```
+
+En el asistente selecciona la configuración del proyecto, nombre
+`aihub_support` y tipo **local**. Introduce este comando:
+
+```bash
+docker exec -i iris-aihub /usr/irissys/bin/iris-mcp-server --config /app/mcp/aihub-support.toml run
+```
+
+OpenCode guardará la configuración del MCP para reutilizarla. El gateway se
+ejecuta dentro del contenedor y usa sus variables de entorno para autenticarse
+en IRIS. No necesitas abrir un puerto MCP en Internet.
+
+**Deja el archivo `opencode.json` completo así:**
+
+Abre `opencode.json` en la raíz del repo, junto a `docker-compose.yml`.
+En EC2, la ruta es `/home/ubuntu/curso-ia-asistentes-iris/opencode.json`.
+Si el asistente sólo ha creado el bloque `mcp` de este ejercicio, sustituye
+su contenido por el siguiente JSON completo y guarda el archivo:
+
+```json
+{
+  "mcp": {
+    "aihub_support": {
+      "type": "local",
+      "command": [
+        "docker",
+        "exec",
+        "-i",
+        "iris-aihub",
+        "/usr/irissys/bin/iris-mcp-server",
+        "--config",
+        "/app/mcp/aihub-support.toml",
+        "run"
+      ],
+      "enabled": true
+    }
+  },
+  "permission": {
+    "*": "deny",
+    "aihub_support_*": "allow"
+  },
+  "autoupdate": false
+}
+```
+
+`mcp` registra y habilita el gateway. `permission` autoriza únicamente las
+herramientas `aihub_support_*`, igual que el lanzador Python. `autoupdate`
+desactiva las actualizaciones automáticas para conservar la versión del curso.
+
+Si ya tenías otros servidores o ajustes propios en ese archivo, consérvalos
+al incorporar esta configuración. Si el asistente ha creado `opencode.jsonc`,
+edita ese archivo en lugar de crear un segundo archivo de configuración.
+No guardes la API key aquí. `opencode auth login` la guarda por separado.
+
+**Comprueba la conexión sin generar una respuesta:**
+
+```bash
+opencode mcp list
+```
+
+Debe mostrar `aihub_support` conectado. Esto comprueba la conexión MCP y no
+llama al modelo de generación.
+
+**Pregunta directamente:**
+
+```bash
+opencode run --model openrouter/openai/gpt-oss-20b \
+  "Responde en español usando las herramientas MCP aihub_support. Consulta ORD-002 con GetOrder y después GetShipment con el tracking obtenido. Indica dónde está y no inventes fechas."
+```
+
+Para consultar un producto y ver los eventos JSON:
+
+```bash
+opencode run --model openrouter/openai/gpt-oss-20b --format json \
+  "Usa aihub_support para consultar SKU-AUD-001 con GetProduct y dime su precio y stock."
+```
+
+Estas consultas **consumen créditos de OpenRouter**. El modelo se indica
+explícitamente con `--model`. Si lo cambias en `.env`, ajusta también estos
+comandos. Comprueba las llamadas y los resultados como en el ejercicio anterior.
+Esta variante queda pendiente de validación en el piloto. Registrar el MCP o
+recibir una respuesta no demuestra por sí solo que el modelo haya usado las
+herramientas esperadas.
 
 ## Problemas frecuentes
 

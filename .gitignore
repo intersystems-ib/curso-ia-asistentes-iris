@@ -1,0 +1,34 @@
+# Credentials and runtime state
+.env
+.env.*
+!.env.example
+.iris-agentic-dev.toml
+irisdata/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+tmp/
+logs/
+internal/
+slides/
+dist/
+data/local/
+*.log
+*.pid
+*.sqlite
+*.db
+.DS_Store
+.idea/
+.agents/
+.codex/
+AGENTS.md
+# Share only the generated VS Code configuration
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

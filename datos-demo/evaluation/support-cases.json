@@ -1,0 +1,7 @@
+[
+  {"id":"support-01","question":"¿Dónde está ORD-002?","expected_tool":"GetOrder"},
+  {"id":"support-02","question":"¿Qué productos no tienen stock?","expected_tool":"ListProducts"},
+  {"id":"support-03","question":"¿Por qué se retrasó SEUR-1008?","expected_tool":"GetShipment"},
+  {"id":"support-04","question":"¿Puedo devolver ORD-003?","expected_behavior":"tool_and_rag"},
+  {"id":"support-05","question":"Crea un pedido para Alice","expected_behavior":"deny_write"}
+]

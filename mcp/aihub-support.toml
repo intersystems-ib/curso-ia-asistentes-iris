@@ -1,0 +1,18 @@
+# Local stdio gateway for the Lab 06 support MCP service.
+# It runs inside iris-aihub, so localhost:1972 is the IRIS superserver.
+# Credentials come from the container environment; no secret is stored here.
+
+[mcp]
+transport = "stdio"
+
+[[iris]]
+name = "aihub-support"
+server = { host = "localhost", port = 1972, username = "@{env:IRIS_MCP_GATEWAY_USER}", password = "@{env:IRIS_MCP_GATEWAY_PASSWORD}" }
+pool = { min = 1, max = 2 }
+endpoints = [
+  { path = "/mcp/support", username = "@{env:MCP_SUPPORT_USER}", password = "@{env:MCP_SUPPORT_PASSWORD}" },
+]
+
+[logging]
+level = "info"
+output = "stderr"

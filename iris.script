@@ -1,0 +1,11 @@
+    // unexpire passwords for dev mode
+    new $namespace
+    set $namespace = "%SYS"
+    do ##class(Security.Users).UnExpireUserPasswords("*")
+
+    // Load the course classes. Sources remain under /app/src at runtime.
+    set $namespace = "USER"
+    set sc = $system.OBJ.LoadDir("/opt/irisapp/src", "ck", , 1)
+    if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) do $system.Process.Terminate(, 1) }
+
+    halt

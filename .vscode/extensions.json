@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    "intersystems-community.objectscript-pack",
+    "ms-vscode-remote.remote-ssh",
+    "shd101wyy.markdown-preview-enhanced"
+  ]
+}

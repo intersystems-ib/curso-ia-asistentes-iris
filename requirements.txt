@@ -1,0 +1,8 @@
+# Kernel support for running the course notebooks inside VS Code.
+ipykernel==6.29.5
+numpy==2.5.2
+# Compatible client used against the OpenRouter endpoint.
+openai==3.5.0
+python-dotenv==1.0.1
+sentence-transformers==3.3.1
+intersystems-irispython==5.4.0

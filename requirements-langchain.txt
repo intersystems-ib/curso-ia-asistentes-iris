@@ -1,0 +1,5 @@
+# Optional dependencies for the LangChain comparison lab.
+langchain==1.3.18
+langchain-openai==1.6.0
+langchain-huggingface==1.2.2
+langchain-text-splitters==1.1.2

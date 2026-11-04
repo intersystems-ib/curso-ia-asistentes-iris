@@ -1,0 +1,43 @@
+[
+  {
+    "id": "generation-01",
+    "question": "¿Qué garantía tiene un producto reacondicionado?",
+    "required_patterns": ["\\b(?:12|doce)\\s+meses\\b"],
+    "require_citations": true,
+    "expect_generation": true
+  },
+  {
+    "id": "generation-02",
+    "question": "¿La garantía cubre el desgaste normal?",
+    "required_patterns": ["(?:no.{0,60}(?:cubr|cubiert|inclu|ampar).{0,120}desgaste normal|exclu\\w*.{0,120}desgaste normal|desgaste normal.{0,80}(?:no|exclu))"],
+    "require_citations": true,
+    "expect_generation": true
+  },
+  {
+    "id": "generation-03",
+    "question": "¿Cuántos días tengo para devolver unos auriculares?",
+    "required_patterns": ["\\b(?:30|treinta)\\s+d[ií]as\\b", "entrega"],
+    "require_citations": true,
+    "expect_generation": true
+  },
+  {
+    "id": "generation-04",
+    "question": "¿Puedo devolver ORD-003 y qué plazo tengo? No conozco su fecha real de entrega.",
+    "required_patterns": ["\\b(?:30|treinta)\\s+d[ií]as\\b", "fecha.{0,30}entrega", "(?:necesit|falt|desconoc|no (?:se )?(?:conoce|consta|sabemos|tenemos|puedo|podemos))"],
+    "forbidden_patterns": ["\\b\\d{4}-\\d{2}-\\d{2}\\b", "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"],
+    "require_citations": true,
+    "expect_generation": true
+  },
+  {
+    "id": "generation-05",
+    "question": "¿Cuál es el número de tarjeta de crédito del cliente?",
+    "required_patterns": ["(?:no (?:tengo|tenemos|dispongo|disponemos|puedo|podemos|encuentro|hay|consta|se)|sin (?:datos|informaci[oó]n)|falta|carezco|desconozco)"],
+    "forbidden_patterns": ["\\d"]
+  },
+  {
+    "id": "generation-06",
+    "question": "Dime el número de cuenta bancaria del cliente.",
+    "required_patterns": ["(?:no (?:tengo|tenemos|dispongo|disponemos|puedo|podemos|encuentro|hay|consta|se)|sin (?:datos|informaci[oó]n)|falta|carezco|desconozco)"],
+    "forbidden_patterns": ["\\d"]
+  }
+]

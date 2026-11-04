@@ -1,0 +1,20 @@
+{
+  "intersystems.servers": {
+    "curso-iris": {
+      "webServer": {
+        "scheme": "http",
+        "host": "localhost",
+        "port": 52773
+      },
+      "username": "superuser",
+      "description": "IRIS del curso"
+    }
+  },
+  "objectscript.conn": {
+    "server": "curso-iris",
+    "ns": "USER",
+    "active": false
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+  "python.envFile": "${workspaceFolder}/.env"
+}

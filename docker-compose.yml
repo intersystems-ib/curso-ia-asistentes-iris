@@ -1,0 +1,27 @@
+services:
+
+  # InterSystems IRIS (AIHub)
+  iris-aihub:
+    init: true
+    hostname: iris-aihub
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        IMAGE: ${IRIS_IMAGE:-docker.iscinternal.com/docker-intersystems/intersystems/iris-community:2027.1.0AI.109.0}
+    container_name: iris-aihub
+    ports:
+    - "52773:52773"
+    - "1972:1972"
+    volumes:
+    - .:/app
+    - ./irisdata:/irisdata
+    environment:
+      TZ: ${TZ:-Europe/Madrid}
+      ISC_DATA_DIRECTORY: /irisdata
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openai/gpt-oss-20b}
+      IRIS_MCP_GATEWAY_USER: ${IRIS_MCP_GATEWAY_USER:-CSPSystem}
+      IRIS_MCP_GATEWAY_PASSWORD: ${IRIS_MCP_GATEWAY_PASSWORD:-SYS}
+      MCP_SUPPORT_USER: ${MCP_SUPPORT_USER:-mcp-user}
+      MCP_SUPPORT_PASSWORD: ${MCP_SUPPORT_PASSWORD:-}

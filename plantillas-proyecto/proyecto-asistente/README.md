@@ -1,64 +1,80 @@
-# Proyecto: [nombre del asistente]
+# Proyecto: [nombre de la exploración]
 
-Usa esta plantilla como punto de partida para el proyecto final. Cualquier tipo
-de solución es válido: un notebook, una herramienta de terminal, RAG Python,
-un agente AI Hub en IRIS, MCP, una interfaz pequeña o incluso otro framework
-externo. Elige lo que te ayude a probar una idea, conserva el dominio docente y
-explica los controles que aplicas. No subas `.env` ni ningún secreto.
+Usa esta plantilla para explicar un proyecto individual de unas **cuatro horas**.
+Puedes partir de un solo ejemplo del curso. No necesitas reproducir todos los
+labs ni construir un asistente completo.
 
-Antes de entregar, revisa los [criterios para tu proyecto](../../docs/criterios-proyecto.md).
-Debe poder verse qué querías probar, qué hiciste, qué ocurrió y qué aprendiste.
-No hace falta una solución perfecta, pero sí una exploración concreta que
-puedas contar.
+Puede ser un notebook, una comparación de resultados, una herramienta de
+terminal, un RAG, un agente, una consulta mediante MCP o una interfaz pequeña.
+Elige lo que te ayude a explorar una pregunta y revisa los
+[criterios del proyecto](../../docs/criterios-proyecto.md).
 
-## 1. Problema y personas usuarias
+Sustituye los textos entre corchetes y adapta el detalle a tu experimento.
+No hace falta que todo funcione. Sí debe poder seguirse qué probaste, qué
+ocurrió y qué aprendiste. No incluyas `.env`, claves ni datos privados.
 
-- **Problema que resolvemos:** [una frase concreta]
-- **Para quién:** [perfil y necesidad]
-- **Pregunta o tarea principal:** [ejemplo realista]
+## 1. Qué quiero explorar
 
-## 2. Fuentes y evidencia
+- **Pregunta:** [qué quiero averiguar o comprobar]
+- **Para quién sería útil y por qué:** [persona, necesidad o problema]
+- **Punto de partida:** [lab, ejemplo o idea propia]
+- **Alcance:** [la pequeña parte que voy a probar y qué dejo fuera]
 
-- **Datos que usa:** [documentos Markdown y/o tablas demo]
-- **Cómo recupera o consulta evidencia:** [chunking, SQL, herramientas…]
-- **Cómo muestra procedencia:** [citas, filas, enlaces…]
-- **Cómo evalúo que funciona:** [casos versionados y resultado esperado]
+## 2. Qué he probado
 
-## 3. Arquitectura
+[Describe los pasos del experimento y las piezas elegidas. Si comparas variantes,
+indica qué cambiaste y qué mantuviste igual.]
 
-```text
-[entrada] -> [recuperación o herramientas] -> [IRIS / AI Hub] -> [salida]
-```
+- **Datos o fuentes:** [documentos, tablas demo u otros datos que puedas compartir]
+- **Entrada de la prueba:** [pregunta, argumentos o caso de evaluación]
+- **Qué esperaba observar:** [resultado o comportamiento esperado]
 
-Explica aquí las piezas elegidas y por qué. Indica qué queda en memoria, qué se persiste en IRIS y cuándo se llama a un modelo externo.
+## 3. Qué ocurrió y qué evidencia conservo
 
-## 4. Contrato de entrada y salida
+- **Resultado observado:** [qué devolvió el sistema o dónde se detuvo]
+- **Evidencia:** [salida, cita, fila, captura, registro, comparación o error]
+- **Qué permite comprobar:** [cómo respalda o cuestiona lo que esperaba]
 
-**Entrada**
+[Incluye aquí un ejemplo o indica el archivo donde se puede inspeccionar.
+Si algo falló, conserva el fallo y explica en qué paso ocurrió. Distingue que
+una ejecución termine de que recupere la evidencia adecuada o responda bien.]
 
-```json
-{"question": "[pregunta de ejemplo]"}
-```
+## 4. Qué aprendí y qué límite encontré
 
-**Salida**
+- **Aprendizaje:** [qué he entendido o qué cambió respecto a mi idea inicial]
+- **Límite o dificultad:** [qué no resuelve la prueba y por qué puede ocurrir]
+- **Siguiente prueba:** [qué haría después para investigar o mejorar]
+- **Controles, cuando apliquen:** [abstención, permisos, alcance de herramientas
+  o protección de datos y secretos]
 
-```json
-{"answer": "[respuesta]", "citations": ["[fuente o fila]"]}
-```
+## 5. Cómo seguir o reproducir la prueba
 
-## 5. Límites y seguridad
+- **Material entregado:** [archivos o enlace accesible al instructor]
+- **Requisitos y estado inicial:** [entorno, dependencias y datos necesarios]
+- **Pasos:** [cómo ejecutar la prueba o seguir el material presentado]
+- **Qué se debería observar:** [salida o evidencia que conviene revisar]
 
-- **Fuera de alcance:** [qué no responde o no hace]
-- **Abstención:** [cuándo prefiere no responder]
-- **Permisos:** [solo lectura, allow-list, ToolSet…]
-- **Secretos:** se cargan desde `.env`, nunca desde código ni Git.
+[Si hay código, incluye los comandos necesarios y los nombres de las variables
+ de configuración sin sus secretos. Indica si alguna llamada consume créditos
+ de un modelo externo. Si sólo hay capturas o registros, explica cómo los
+ obtuviste y qué entrada corresponde a cada resultado.]
 
-## 6. Cómo ejecutar
+## 6. Mi presentación de tres minutos
 
-```bash
-# [pasos mínimos, reproducibles y sin secretos]
-```
+- **30 segundos:** la pregunta y por qué merece explorarse.
+- **90 segundos:** la prueba y una evidencia visible de lo que ocurrió.
+- **60 segundos:** el límite, el aprendizaje y la siguiente prueba.
 
-## 7. Demostración
+Puedes mostrar el notebook, una salida guardada o una captura. No necesitas
+slides ni una demo en directo. Si el experimento no funcionó, explica el intento
+y el fallo con la evidencia que conservaste.
 
-Prepara tres minutos: problema, una pregunta que funciona con evidencia visible, un límite que se rechaza correctamente y una idea de mejora.
+## Detalles adicionales, si ayudan a entenderlo
+
+Esta parte es opcional. Puedes omitirla si las secciones anteriores explican
+el experimento.
+
+- **Arquitectura:** [piezas utilizadas, qué se guarda y cuándo se llama a un modelo]
+- **Entrada y salida de una herramienta o API:** [ejemplo real de su contrato,
+  sólo si tu proyecto incluye una]
+- **Otras pruebas:** [casos o resultados adicionales que quieras compartir]

@@ -21,7 +21,7 @@ En este lab verás agente, herramientas y política. En el Lab 05 añadiremos un
 - **Herramientas de lectura:** abre [OrderTools.cls](../../src/Learning/Tools/OrderTools.cls) y sigue `GetOrder`. Recibe una referencia de pedido, localiza el registro y construye un resultado con datos y su origen. [CatalogTools.cls](../../src/Learning/Tools/CatalogTools.cls) y [ShipmentTools.cls](../../src/Learning/Tools/ShipmentTools.cls) hacen lo mismo para catálogo y envíos.
 - **ToolSet:** en [Learning.ToolSet.ReadOnlySupport](../../src/Learning/ToolSet/ReadOnlySupport.cls), fíjate en `XData Definition`. Cada entrada `Tool` enlaza un nombre con una clase y un método. Sus descripciones ayudan al agente a decidir cuándo usar cada herramienta.
 - **Autorización:** en [Learning.Policy.ReadOnlySupport](../../src/Learning/Policy/ReadOnlySupport.cls), busca `%CanExecute`. Compara los nombres permitidos con los publicados en el ToolSet. Cualquier herramienta que no esté en la lista queda denegada.
-- **Agente:** en [Learning.Agent.Support](../../src/Learning/Agent/Support.cls), céntrate en `Create`. Observa cómo configura `SystemPrompt`, añade el ToolSet con `AddTool` y conecta la política con `SetAuthPolicy`.
+- **Agente:** en [Learning.Agent.Support](../../src/Learning/Agent/Support.cls), observa `XData INSTRUCTIONS`, el parámetro `TOOLSETS` y el método `%OnInit`, que conecta la política con `SetAuthPolicy`. La clase hereda la configuración OpenRouter de `Learning.Agent.Basic`.
 
 Puedes abrir estas clases mientras sigues el diagrama y volver a ellas al ejecutar las pruebas. No hace falta entender cada línea para reconocer qué responsabilidad tiene cada pieza.
 
@@ -122,13 +122,30 @@ Do ##class(Learning.Test.Evidence).Run()
 Con la clave de OpenRouter, puedes crear una sesión de AI Hub desde la terminal:
 
 ```objectscript
-Set sc = ##class(Learning.Agent.Support).Create(.agent)
-Set session = agent.CreateSession()
+Set agent = ##class(Learning.Agent.Support).%New()
+Set sc = agent.%Init()
+Do $System.Status.DisplayError(sc)
+; Continúa sólo si sc es correcto.
+// Máximo de 10 iteraciones del agente para responder cada pregunta.
+// Cada iteración puede incluir varias llamadas a herramientas.
+Set session = agent.CreateSession({"max_iterations":10})
 Set response = agent.Chat(session, "¿Dónde está ORD-002?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
+Con la clave configurada, puedes comprobar la inicialización declarativa sin consumir créditos:
+
+```objectscript
+Do $System.Status.DisplayError(##class(Learning.Test.Agents).Run())
+```
+
+Esta prueba comprueba las reglas comunes, el catálogo de herramientas y que la skill empieza inactiva. No llama al modelo.
+
 El agente usa OpenRouter con `openai/gpt-oss-20b` por defecto, igual que los Labs Python. Configura `OPENROUTER_API_KEY` y, si quieres otro modelo, `OPENROUTER_MODEL` en `.env`. Consulta [la configuración](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
+
+En este patrón, `%New()` crea el objeto y `%Init()` carga el proveedor, las instrucciones y las herramientas. Si la inicialización devuelve un error, corrige la configuración antes de crear la sesión. `max_iterations` limita las rondas de herramientas de cada pregunta.
+
+`XData INSTRUCTIONS` contiene el texto que recibe el modelo. Al redefinirlo en una subclase, sustituye al heredado. Por eso `Basic.%OnInit()` antepone explícitamente las reglas comunes al texto específico de soporte o analítica. Puedes inspeccionar el resultado con `Write agent.SystemPrompt, !`.
 
 La clave es opcional. Sin ella, el núcleo del lab —datos, ToolSet y política— sigue siendo completamente comprobable.
 
@@ -139,3 +156,5 @@ Si quieres profundizar, puedes explorar una herramienta de lectura para buscar p
 Puedes empezar por decidir qué argumentos aceptaría, cómo se publicaría en el ToolSet y si cumple la allow-list. Otra posibilidad es comprobar qué ocurre con un nombre parecido que no esté autorizado.
 
 Siguiente paso: en el Lab 05 incorporaremos políticas Markdown como evidencia semántica, sin perder estos controles sobre los datos estructurados.
+
+Para separar configuración y credenciales del entorno, tienes la [ampliación opcional de Config Store y Wallet](../opcionales/config-store-wallet/README.md).

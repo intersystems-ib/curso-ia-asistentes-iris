@@ -98,7 +98,8 @@ ClassMethod ReadText(path As %String, Output text As %String) As %Status [ Priva
 /// Lab 05: create a governed agent and expand native search hits to full policy documents.
 ClassMethod AddToSupportAgent(Output agent As %AI.Agent) As %Status
 {
-    Set sc = ##class(Learning.Agent.Support).Create(.agent)
+    Set agent = ##class(Learning.Agent.Support).%New()
+    Set sc = agent.%Init()
     Quit:$$$ISERR(sc) sc
     Set sc = ..Build(.knowledgeBase)
     Quit:$$$ISERR(sc) sc
@@ -111,7 +112,8 @@ ClassMethod AddToSupportAgent(Output agent As %AI.Agent) As %Status
 /// Lab 05 skill variant: attach the same full-document policy search.
 ClassMethod AddToSupportAgentWithSkill(Output agent As %AI.Agent) As %Status
 {
-    Set sc = ##class(Learning.Agent.Support).CreateWithSkill(.agent)
+    Set agent = ##class(Learning.Agent.SupportWithSkill).%New()
+    Set sc = agent.%Init()
     Quit:$$$ISERR(sc) sc
     Set sc = ..Build(.knowledgeBase)
     Quit:$$$ISERR(sc) sc
@@ -121,10 +123,32 @@ ClassMethod AddToSupportAgentWithSkill(Output agent As %AI.Agent) As %Status
     Quit $$$OK
 }
 
-/// Both Lab 05 variants must retrieve the policy, even when the catalog supplies a duration.
+XData PolicyInstructions [ MimeType = text/markdown ]
+{
+## Evidencia documental del Lab 05
+
+- Para preguntas sobre cobertura, exclusiones, condiciones, plazos, devoluciones,
+  cancelaciones o garantía, llama a `search_support_policies` y cita el archivo.
+- Elige el `topic` explícito: garantia, devoluciones, cancelaciones, envios,
+  cambios o productos. Usa general sólo para consultas sin un tema definido.
+- `GetProduct` informa de los meses de garantía, pero no acredita cobertura ni
+  exclusiones. Para explicarlas, recupera la política con `topic=garantia`,
+  también después de activar una skill.
+}
+
+/// Append the same RAG-specific rules to both already-initialized agents.
 ClassMethod PolicyInstructions() As %String [ Private ]
 {
-    Return " Para cualquier pregunta sobre cobertura, exclusiones, condiciones, plazos, devoluciones, cancelaciones o garantia, llama a search_support_policies antes de responder y cita el archivo recuperado. Elige su topic explicito: garantia, devoluciones, cancelaciones, envios, cambios o productos. Usa general solo para consultas sin un tema definido. GetProduct informa de los meses de garantia, pero no acredita cobertura ni exclusiones: para explicar que cubre un producto debes recuperar la politica con topic garantia, tambien despues de activar una skill."
+    Set xdata = ##class(%Dictionary.CompiledXData).IDKEYOpen("Learning.Knowledge.SupportRAG", "PolicyInstructions")
+    If '$IsObject(xdata) {
+        $$$ThrowStatus($$$ERROR($$$GeneralError, "No se encuentran las instrucciones RAG"))
+    }
+    Set text = $Char(10)
+    Do xdata.Data.Rewind()
+    While 'xdata.Data.AtEnd {
+        Set text = text _ xdata.Data.ReadLine() _ $Char(10)
+    }
+    Return text
 }
 
 }

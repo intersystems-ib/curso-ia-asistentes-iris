@@ -46,7 +46,8 @@ Usa la terminal ObjectScript del contenedor, igual que en los Labs 04–06. En e
 ## Crear el agente y preguntar
 
 ```objectscript
-Set sc = ##class(Learning.Agent.Analytics).Create(.agent)
+Set agent = ##class(Learning.Agent.Analytics).%New()
+Set sc = agent.%Init()
 Do $System.Status.DisplayError(sc)
 
 ; Muestra cada llamada y el SQL completo en todos los ejemplos de este lab.
@@ -55,7 +56,9 @@ Do agent.ToolManager.SetAuditPolicy(##class(Learning.Policy.ConsoleSQLAudit).%Ne
 ; Opcional: confirma qué herramientas ha registrado AI Hub.
 Write agent.ToolManager.GetToolStatuses().%ToJSON(), !
 
-Set session = agent.CreateSession()
+// Máximo de 10 iteraciones del agente para responder cada pregunta.
+// Cada iteración puede incluir varias llamadas a herramientas.
+Set session = agent.CreateSession({"max_iterations":10})
 Set response = agent.Chat(session, "¿Cuántos pedidos hay por estado?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
@@ -108,14 +111,16 @@ No aparece `ListTables`: se ha excluido deliberadamente para que el agente no pu
 
 ### Ajustar la instrucción sin tocar el agente
 
-La instrucción por defecto está declarada como `Parameter INSTRUCTIONS` en `Learning.Agent.Analytics`, separada del código que registra herramientas y políticas. Para una demostración concreta, el instructor puede añadir una indicación de estilo al crear el agente, conservando el esquema de tablas y las instrucciones de uso de herramientas:
+La instrucción por defecto está en `XData INSTRUCTIONS` de `Learning.Agent.Analytics`. `%Init()` la carga y antepone las reglas comunes. Para añadir una indicación de estilo, modifica el prompt después de inicializar el agente y antes de crear la sesión:
 
 ```objectscript
-Set instructions = ##class(Learning.Agent.Analytics).#INSTRUCTIONS _ " Responde muy brevemente en texto plano."
-Set sc = ##class(Learning.Agent.Analytics).Create(.agent, instructions)
+Set agent = ##class(Learning.Agent.Analytics).%New()
+Set sc = agent.%Init()
 Do $System.Status.DisplayError(sc)
+; Continúa sólo si sc es correcto.
+Set agent.SystemPrompt = agent.SystemPrompt _ $Char(10) _ "Responde muy brevemente en texto plano."
 Do agent.ToolManager.SetAuditPolicy(##class(Learning.Policy.ConsoleSQLAudit).%New())
-Set session = agent.CreateSession()
+Set session = agent.CreateSession({"max_iterations":10})
 ```
 
 Eso no cambia la allow-list ni concede nuevos permisos: sólo modifica cómo se comporta el modelo en esa sesión. Este bloque crea un agente y una sesión nuevos, con la misma auditoría docente. Las preguntas siguientes utilizan esa sesión.
@@ -175,7 +180,7 @@ No necesitas permisos adicionales para las consultas permitidas: el agente usa e
 ```objectscript
 Write agent.ToolManager.GetToolStatuses().%ToJSON(), !
 Do agent.ToolManager.SetAuditPolicy(##class(Learning.Policy.ConsoleSQLAudit).%New())
-Set session = agent.CreateSession()
+Set session = agent.CreateSession({"max_iterations":10})
 ```
 
 La primera línea debe mostrar `DescribeTable`, `RunQuery` y `SampleRows` como `available`. La segunda usa la auditoría docente `ConsoleSQLAudit`: imprime en la consola cada llamada y, para `RunQuery`, el SQL completo antes de resumir las filas devueltas. Si el modelo no invoca herramientas, no habrá consultas que mostrar. No se guarda como auditoría persistente y no sustituye `SQLAllowList`: sólo hace visible lo que el agente intenta hacer.

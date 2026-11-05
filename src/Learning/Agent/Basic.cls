@@ -1,43 +1,45 @@
 Include %occStatus
 
-/// Creates AI Hub agents using OpenRouter and credentials from the environment.
-Class Learning.Agent.Basic Extends %RegisteredObject
+/// Shared OpenRouter configuration and evidence rules for the teaching agents.
+Class Learning.Agent.Basic Extends %AI.Agent
 {
 
-/// Shared default model for the Python labs and native agents.
+Parameter PROVIDER = "openrouter";
+Parameter APIKEY = "@{env:OPENROUTER_API_KEY}";
 Parameter MODEL = "openai/gpt-oss-20b";
 
-/// Create OpenRouter without exposing its key or falling back to another provider.
-ClassMethod CreateProvider(Output provider As %AI.Provider) As %Status
+XData INSTRUCTIONS [ MimeType = text/markdown ]
 {
-    Set apiKey = $SYSTEM.Util.GetEnviron("OPENROUTER_API_KEY")
-    If apiKey = "" {
-        Quit $$$ERROR($$$GeneralError, "Set OPENROUTER_API_KEY in .env and recreate the container to use an AI Hub agent")
-    }
-    Set sc = $$$OK
-    Try {
-        Set settings = {}
-        Do settings.%Set("api_key", apiKey)
-        Set provider = ##class(%AI.Provider).Create("openrouter", settings)
-    } Catch ex {
-        Set sc = ex.AsStatus()
-    }
-    Quit sc
+## Reglas comunes
+
+- Responde en español. No inventes datos ni ejecutes escrituras.
+- Usa la evidencia recuperada y reconoce cuándo falta información.
+- Cita los registros con `sourceRef` y los documentos con `metadata.source`, entre corchetes.
+- Sólo genera enlaces si `sourceUrl` contiene una URL explícita. Un null no es una URL.
 }
 
-/// Create a base AI Hub agent with the common model and Spanish safety prompt.
-ClassMethod Create(Output agent As %AI.Agent) As %Status
+/// XData overrides inherited instructions. Prepend the base rules explicitly.
+/// Stored configurations supply their own model, independent of the environment.
+Method %OnInit() As %Status
 {
-    Set sc = ..CreateProvider(.provider)
-    Quit:$$$ISERR(sc) sc
-    Set agent = ##class(%AI.Agent).%New(provider)
-    Set model = $SYSTEM.Util.GetEnviron("OPENROUTER_MODEL")
-    If model = "" {
-        Set model = ..#MODEL
+    If ..#PROVIDERCONFIG = "" {
+        If $SYSTEM.Util.GetEnviron("OPENROUTER_API_KEY") = "" {
+            Return $$$ERROR($$$GeneralError, "Configura OPENROUTER_API_KEY en .env y recrea el contenedor")
+        }
+        Set model = $SYSTEM.Util.GetEnviron("OPENROUTER_MODEL")
+        If model '= "" Set ..Model = model
     }
-    Set agent.Model = model
-    Set agent.SystemPrompt = "Responde en español. No inventes datos ni ejecutes escrituras. Indica la fuente de cada dato recuperado."
-    Quit $$$OK
+    If $ClassName($This) '= "Learning.Agent.Basic" {
+        Set xdata = ##class(%Dictionary.CompiledXData).IDKEYOpen("Learning.Agent.Basic", "INSTRUCTIONS")
+        If '$IsObject(xdata) Return $$$ERROR($$$GeneralError, "No se encuentran las instrucciones comunes")
+        Set common = ""
+        Do xdata.Data.Rewind()
+        While 'xdata.Data.AtEnd {
+            Set common = common _ xdata.Data.ReadLine() _ $Char(10)
+        }
+        Set ..SystemPrompt = common _ $Char(10) _ ..SystemPrompt
+    }
+    Return $$$OK
 }
 
 }

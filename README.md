@@ -80,6 +80,7 @@ Están fuera de la numeración y no bloquean el recorrido base.
 
 - [LangChain](labs/opcionales/langchain/README.md): notebook autocontenido para comparar el flujo RAG con un framework.
 - [Text-to-SQL](labs/opcionales/text-to-sql/README.md): agente AI Hub limitado a cuatro tablas demo y a `SELECT`.
+- [Config Store y Wallet](labs/opcionales/config-store-wallet/README.md): configuración del agente y credenciales protegidas en IRIS.
 - [UI de asistente](labs/opcionales/ui-asistente/README.md): Gradio y FastAPI sobre el RAG Python.
 
 Para el trabajo final, parte de [la plantilla de proyecto](plantillas-proyecto/proyecto-asistente/README.md) y consulta los [criterios de evaluación](docs/criterios-proyecto.md).

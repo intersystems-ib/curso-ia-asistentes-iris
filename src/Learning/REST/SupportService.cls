@@ -26,9 +26,10 @@ ClassMethod Chat() As %Status
             Set payload = {"error":"El campo question es obligatorio."}
             Do ..WriteJson(payload)
         } Else {
-            Set sc = ##class(Learning.Agent.Support).Create(.agent)
+            Set agent = ##class(Learning.Agent.Support).%New()
+            Set sc = agent.%Init()
             $$$ThrowOnError(sc)
-            Set session = agent.CreateSession()
+            Set session = agent.CreateSession({"max_iterations":10})
             Set agentResponse = agent.Chat(session, question)
             Set payload = {"citations":[], "abstained":0}
             Do payload.%Set("answer", agentResponse.Content)

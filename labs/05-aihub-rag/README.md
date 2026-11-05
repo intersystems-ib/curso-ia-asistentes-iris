@@ -29,13 +29,14 @@ flowchart TB
     class Question,Answer input;
     class Agent,Tools,KB,Search,Evidence process;
     class Data,Vector iris;
+    style iris_runtime fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
 ```
 
 ## Antes de empezar
 
 Necesitas haber comprobado las herramientas y la política del [Lab 04](../04-iris-y-aihub/README.md), con IRIS y los datos demo disponibles. Para conversar, reutiliza la [configuración de OpenRouter](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris). No necesitas instalar dependencias Python en `.venv` para este recorrido.
 
-Aquí crearás una base de conocimiento nativa con FastEmbed, distinta de la tabla vectorial Python del Lab 02. Si saltas directamente a este lab, completa los requisitos del Lab 04. No necesitas ejecutar los Labs 01–03.
+Aquí crearás una base de conocimiento nativa con FastEmbed, distinta de la tabla vectorial Python del Lab 02. [FastEmbed](https://qdrant.github.io/fastembed/) es una librería ligera de Python que ejecuta modelos de embeddings localmente para convertir textos en vectores. En este lab permite comparar la pregunta con las políticas por su significado. Si saltas directamente a este lab, completa los requisitos del Lab 04. No necesitas ejecutar los Labs 01–03.
 
 ## Recorrido principal: terminal ObjectScript
 
@@ -74,7 +75,9 @@ Primero creamos el agente y añadimos una auditoría de consola. No es un adorno
 ```objectscript
 Set sc = ##class(Learning.Knowledge.SupportRAG).AddToSupportAgent(.agent)
 Do agent.ToolManager.SetAuditPolicy(##class(%AI.Policy.ConsoleAudit).%New())
-Set session = agent.CreateSession()
+// Máximo de 10 iteraciones del agente para responder cada pregunta.
+// Cada iteración puede incluir varias llamadas a herramientas.
+Set session = agent.CreateSession({"max_iterations":10})
 Set response = agent.Chat(session, "¿Qué cubre la garantía de SKU-AUD-001?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
@@ -119,7 +122,7 @@ Hasta ahora has visto de forma explícita la cadena agente → ToolSet → polí
 - el ToolSet `Learning.ToolSet.ReadOnlySupport`.
 - metadatos breves (`SUMMARY`) para describir la capacidad.
 
-Es el equivalente ObjectScript de un `SKILL.md`: una unidad reutilizable de instrucciones y herramientas. En AI Hub, `UseSkill` registra el catálogo y los metadatos, pero las instrucciones se cargan de forma progresiva cuando el modelo invoca `load_skill`. `CreateWithSkill` pide expresamente activar `support-workflow` antes de atender la consulta. No es un subagente, no crea una sesión distinta ni recibe permisos propios.
+Es el equivalente ObjectScript de un `SKILL.md`: una unidad reutilizable de instrucciones y herramientas. En AI Hub, el parámetro `SKILLS` registra la capacidad durante `%Init()`. Las instrucciones y herramientas se hacen visibles al modelo cuando invoca `load_skill`. `Learning.Agent.SupportWithSkill` pide expresamente activar `support-workflow` antes de atender la consulta. La alternativa programática es `UseSkill`. No es un subagente, no crea una sesión distinta ni recibe permisos propios.
 
 **¿Qué aporta?** Evita repetir el mismo prompt y la selección de herramientas en cada agente, mantiene reglas como «cita las fuentes recuperadas» en un único sitio y ayuda a organizar un agente con varias capacidades —por ejemplo, soporte, analítica y documentación— sin convertir su prompt principal en un texto enorme. No sustituye a las políticas de seguridad: esas siguen siendo responsabilidad del ToolSet y de `Learning.Policy.ReadOnlySupport`.
 
@@ -140,6 +143,8 @@ flowchart TB
     class RAG input;
 ```
 
+Compara las clases: `Support` declara `TOOLSETS`, mientras que `SupportWithSkill` declara `SKILLS`. Ambas heredan de `Basic` y conservan las reglas comunes. El flujo específico de la variante con skill está en `SupportWorkflow.INSTRUCTIONS`, sin repetirlo en el prompt principal.
+
 Prueba esta ruta como una **alternativa** a la creación anterior, en una sesión nueva de IRIS. No hace falta añadirla al agente que ya tenías. La base de conocimiento se añade después exactamente igual y genera `search_support_policies`:
 
 ```objectscript
@@ -148,7 +153,7 @@ Do $System.Status.DisplayError(sc)
 Write agent.ToolManager.GetToolStatuses().%ToJSON(), !
 
 Do agent.ToolManager.SetAuditPolicy(##class(%AI.Policy.ConsoleAudit).%New())
-Set session = agent.CreateSession()
+Set session = agent.CreateSession({"max_iterations":10})
 Set response = agent.Chat(session, "ORD-003 figura como entregado. ¿Puedo devolverlo y qué plazo tengo?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
@@ -161,6 +166,6 @@ Write session.ActiveSkills.%ToJSON(), !
 
 Debe aparecer `Learning.Skill.SupportWorkflow`. Que las herramientas estén registradas en el catálogo no demuestra por sí solo que se hayan cargado las instrucciones de la skill.
 
-El catálogo debe mostrar las mismas herramientas de pedido, producto y envío, y `search_support_policies` aparecerá al añadir la base de conocimiento. En el trace comprueba que la pregunta combina `GetOrder` con la búsqueda de políticas y que la respuesta cita la evidencia.
+Antes de activar la skill, sus herramientas están registradas internamente pero ocultas al modelo. Al activarla, se hacen visibles las mismas herramientas de pedido, producto y envío. `search_support_policies` se añade por separado con la base de conocimiento. En el trace comprueba que la pregunta combina `GetOrder` con la búsqueda de políticas y que la respuesta cita la evidencia.
 
 Lo que cambia es cómo se empaquetan y se reutilizan las instrucciones y el ToolSet. Se mantienen la búsqueda con ampliación a documentos completos, las fuentes Markdown, la política `Learning.Policy.ReadOnlySupport` y los permisos: la skill no concede acceso adicional. Para comprobarlo, intenta una escritura como en el Lab 04. La política debe seguir denegándola. AI Hub también puede cargar skills desde otros orígenes en escenarios más avanzados, pero aquí la dejamos deliberadamente como una clase interna y fácil de inspeccionar.

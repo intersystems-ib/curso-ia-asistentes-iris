@@ -126,12 +126,15 @@ Labs Python. Configura `OPENROUTER_API_KEY` y, si quieres otro modelo,
 La clave es opcional. Sin ella, el núcleo del lab —datos, ToolSet y política—
 sigue siendo completamente comprobable.
 
-## Reto
+## Ideas para explorar por tu cuenta
 
-Añade una herramienta de lectura para buscar pedidos por cliente. Antes de
-incluirla en el ToolSet, decide qué argumentos aceptará y verifica que cumple
-la allow-list. Comprueba también que un nombre parecido pero no autorizado sigue
-denegado.
+Si quieres profundizar, puedes explorar una herramienta de lectura para buscar
+pedidos por cliente. Es una propuesta opcional y no forma parte de una entrega
+obligatoria.
+
+Puedes empezar por decidir qué argumentos aceptaría, cómo se publicaría en el
+ToolSet y si cumple la allow-list. Otra posibilidad es comprobar qué ocurre con
+un nombre parecido que no esté autorizado.
 
 Siguiente paso: en el Lab 05 incorporaremos políticas Markdown como evidencia
 semántica, sin perder estos controles sobre los datos estructurados.

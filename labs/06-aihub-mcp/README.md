@@ -330,9 +330,13 @@ herramientas esperadas.
 - **JSON-RPC inválido**: no añadas `%AI.Policy.ConsoleAudit` a este ToolSet.
   Escribir en la salida estándar rompería el protocolo MCP.
 
-## Reto
+## Ideas para explorar por tu cuenta
 
-Pide a OpenCode que cree un pedido usando `--ask`. Debe comprobar que esa herramienta no existe o
-recibir una denegación. Localiza la segunda barrera en
+Si quieres profundizar, puedes pedir a OpenCode que cree un pedido usando
+`--ask` y observar cómo responde al no disponer de esa herramienta o recibir una
+denegación. Es una propuesta opcional y no forma parte de una entrega
+obligatoria. La consulta consume créditos de OpenRouter.
+
+También puedes explorar la segunda barrera en
 `Learning.Policy.ReadOnlySupport`: la seguridad no depende de que el modelo
 “se porte bien”, sino de la superficie publicada y la política que la protege.

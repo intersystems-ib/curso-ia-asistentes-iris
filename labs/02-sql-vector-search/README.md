@@ -153,13 +153,16 @@ aparece un error de dimensiones, comprueba que usas el modelo multilingüe
 predeterminado de 384 dimensiones: el tipo de `TO_VECTOR` y el de la columna
 deben coincidir exactamente.
 
-## Retos
+## Ideas para explorar por tu cuenta
 
-1. Compara una pregunta del Lab 01 en memoria y en IRIS. ¿Cambian las fuentes
-   recuperadas?
-2. Cambia la pregunta y comprueba qué fragmentos pasan a ser relevantes.
-3. Explica por qué `TOP ... ORDER BY score DESC` forma parte del diseño de la
-   consulta, no sólo de cómo se presenta el resultado.
+Si quieres profundizar, puedes probar alguna de estas ideas. Son opcionales y
+no forman parte de una entrega obligatoria.
+
+- Comparar una pregunta del Lab 01 en memoria y en IRIS. ¿Cambian las fuentes
+  recuperadas?
+- Variar la pregunta y observar qué fragmentos pasan a ser relevantes.
+- Explorar por qué `TOP ... ORDER BY score DESC` forma parte del diseño de la
+  consulta, además de determinar cómo se presenta el resultado.
 
 ## Siguiente paso
 

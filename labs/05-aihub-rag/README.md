@@ -157,14 +157,16 @@ No basta con que la respuesta suene razonable. Pide al agente que cite el
 documento recuperado y compara esa evidencia con el Markdown original. Si la
 pregunta no tiene respaldo, debe reconocerlo en vez de rellenar el hueco.
 
-## Reto
+## Ideas para explorar por tu cuenta
 
-Formula una pregunta que necesite las dos fuentes, por ejemplo una devolución
-de un pedido concreto: **«ORD-003 figura como entregado. ¿Puedo devolverlo y
-qué plazo tengo?»**
+Si quieres profundizar, puedes probar una pregunta que necesite las dos
+fuentes, por ejemplo una devolución de un pedido concreto:
+**«ORD-003 figura como entregado. ¿Puedo devolverlo y qué plazo tengo?»**
+Es una propuesta opcional y no forma parte de una entrega obligatoria.
+La conversación con el modelo consume créditos de OpenRouter.
 
-Identifica qué parte procede del pedido en IRIS (su estado) y cuál procede de
-la política Markdown (condiciones y plazo de devolución). El estado Delivered
+Puedes observar qué parte procede del pedido en IRIS (su estado) y cuál procede
+de la política Markdown (condiciones y plazo de devolución). El estado Delivered
 no incluye una fecha real de entrega: la respuesta debe separar el plazo general
 de la confirmación de que ese pedido esté dentro del plazo. Los metadatos de los
 fragmentos identifican archivos locales, no URLs. Se citan por su nombre sin

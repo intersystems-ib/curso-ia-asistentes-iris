@@ -187,12 +187,15 @@ haya entregado políticas irrelevantes. Que pase ese caso de generación no
 resuelve por sí solo los fallos de recuperación. Esta batería tampoco
 valida las herramientas ni las skills nativas de AI Hub.
 
-## Retos
+## Ideas para explorar por tu cuenta
 
-1. Añade un caso para una política inexistente y espera una abstención.
-2. Cambia el tamaño de chunk en el Lab 02, recarga el corpus y compara la tasa.
-3. Explica qué prueba adicional necesitarías para evaluar la calidad de una
-   respuesta generada por un LLM.
+Si quieres profundizar, puedes probar alguna de estas ideas. Son opcionales y
+no forman parte de una entrega obligatoria.
+
+- Añadir un caso sobre una política inexistente y observar si el sistema se abstiene.
+- Cambiar el tamaño de chunk en el Lab 02, recargar el corpus y comparar la tasa.
+- Pensar qué prueba adicional ayudaría a evaluar la calidad de una respuesta
+  generada por un LLM.
 
 ## Siguiente paso
 

@@ -157,11 +157,15 @@ La formulación importa: quitar «de crédito» puede hacer que se recuperen
 políticas aunque no contengan ese dato. Compara ambas preguntas e inspecciona
 la evidencia. La similitud por sí sola no comprueba que exista una respuesta.
 
-## Retos
+## Ideas para explorar por tu cuenta
 
-1. Cambia el tamaño de chunk a 80 y a 180 palabras. ¿Qué pasa con las citas?
-2. Busca una regla que conozcas de un Markdown y comprueba qué chunk la trae.
-3. Ejecuta la misma pregunta con y sin `--generate`. ¿Qué información añade el modelo y qué evidencia conserva?
+Si quieres profundizar, puedes probar alguna de estas ideas. Son opcionales y
+no forman parte de una entrega obligatoria.
+
+- Probar tamaños de chunk de 80 y 180 palabras y observar qué ocurre con las citas.
+- Buscar una regla que conozcas de un Markdown y comprobar qué chunk la recupera.
+- Comparar la misma pregunta con y sin `--generate`. ¿Qué información añade el
+  modelo y qué evidencia conserva? La variante con generación consume créditos.
 
 ## Siguiente paso
 

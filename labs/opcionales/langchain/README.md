@@ -4,15 +4,24 @@ En el Lab 01 construiste cada pieza del flujo a mano con `learning_ai_rag`. Aqu�
 
 ```mermaid
 flowchart TB
-    Docs[Documentos Markdown] --> Chunks[RecursiveCharacterTextSplitter<br/>120 palabras · solapamiento 30]
-    Chunks --> LCDocs[Document de LangChain<br/>texto + metadatos]
-    LCDocs --> Store[InMemoryVectorStore]
-    Question[Pregunta] --> Embedding[HuggingFaceEmbeddings<br/>MiniLM-L12-v2]
-    Store --> Search[Búsqueda por similitud]
-    Embedding --> Search
-    Search --> Evidence[Contexto y citas]
-    Evidence -. opcional .-> LLM[OpenRouter]
-    LLM -.-> Answer[Respuesta RAG]
+    subgraph Prepare[1. Preparar en memoria]
+        direction LR
+        Docs[Documentos<br/>Markdown] --> Chunks[RecursiveCharacterTextSplitter<br/>120 palabras · solapamiento 30]
+        Chunks --> LCDocs[Document de LangChain<br/>texto + metadatos]
+        LCDocs --> Store[InMemoryVectorStore]
+    end
+    subgraph Retrieve[2. Recuperar evidencia]
+        direction LR
+        Question[Pregunta] --> Embedding[HuggingFaceEmbeddings<br/>MiniLM-L12-v2]
+        Embedding --> Search[Búsqueda por similitud]
+        Search --> Evidence[Contexto y citas]
+    end
+    subgraph Generate[3. Generación opcional]
+        direction LR
+        LLM[OpenRouter] --> Answer[Respuesta RAG]
+    end
+    Prepare -->|Consultar el almacén| Retrieve
+    Retrieve -. Contexto y citas .-> Generate
     classDef input fill:#E7F0F8,stroke:#2B648E,color:#18344D,stroke-width:1.5px;
     classDef process fill:#EEF3F7,stroke:#617A8A,color:#263E50,stroke-width:1.5px;
     classDef outcome fill:#E8F4EE,stroke:#3A7D5A,color:#214B35,stroke-width:1.5px;
@@ -21,6 +30,9 @@ flowchart TB
     class Chunks,LCDocs,Store,Embedding,Search process;
     class Evidence,Answer outcome;
     class LLM optional;
+    style Prepare fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
+    style Retrieve fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
+    style Generate fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
 ```
 
 ## Qué vas a comparar

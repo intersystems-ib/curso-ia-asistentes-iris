@@ -19,19 +19,24 @@ Seguimos usando la pequeña biblioteca Python del curso, `learning_ai_rag`. No h
 ```mermaid
 flowchart TD
     subgraph Prepare[1. Preparar y persistir]
+        direction LR
         Docs[Políticas Markdown] --> Chunks[Chunks con fuente]
         Chunks --> Embeddings[Embeddings locales]
         Embeddings --> Table[Tabla VECTOR en IRIS]
         Table --> Index[Índice HNSW]
     end
-    subgraph Search[2. Recuperar y generar]
+    subgraph Search[2. Recuperar desde IRIS]
+        direction LR
         Question[Pregunta] --> QueryEmbedding[Embedding de la pregunta]
         QueryEmbedding --> SQL[TO_VECTOR + VECTOR_COSINE]
-        Index --> SQL
         SQL --> Results[Contexto y citas]
-        Results --> LLM[OpenRouter opcional]
-        LLM --> Answer[Respuesta RAG]
     end
+    subgraph RAG[3. Generación opcional]
+        direction LR
+        LLM[OpenRouter] --> Answer[Respuesta RAG]
+    end
+    Prepare -->|Consultar el almacén con HNSW| Search
+    Search -->|Contexto y citas| RAG
     classDef input fill:#E7F0F8,stroke:#2B648E,color:#18344D,stroke-width:1.5px;
     classDef process fill:#EEF3F7,stroke:#617A8A,color:#263E50,stroke-width:1.5px;
     classDef iris fill:#D7EBE8,stroke:#19706C,color:#174743,stroke-width:1.5px;
@@ -42,6 +47,7 @@ flowchart TD
     class LLM,Answer generation;
     style Prepare fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
     style Search fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
+    style RAG fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
 ```
 
 ## Antes de empezar

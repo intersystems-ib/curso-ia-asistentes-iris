@@ -28,14 +28,12 @@ flowchart TB
     subgraph Shared[Lo reutilizado de los Labs 01–03]
         direction TB
         Service[service.py<br/>RAG Python compartido] --> Store[(IRIS<br/>chunks + índice HNSW)]
-        Service --> Result[Respuesta,<br/>evidencia y citas]
+        Service --> Result[Respuesta, evidencia y citas<br/>para Gradio o FastAPI]
         Service -. "sólo si se solicita" .-> OpenRouter[OpenRouter<br/>redacción RAG]
     end
 
     UI -->|pregunta| Service
     API -->|POST /chat| Service
-    Result -->|resultado visible| UI
-    Result -->|JSON| API
     OpenRouter --> Result
 
     classDef input fill:#E7F0F8,stroke:#2B648E,color:#18344D,stroke-width:1.5px;
@@ -116,7 +114,7 @@ La UI anterior habla con el RAG Python, que es suficiente para esta ampliación.
 `Learning.REST.SupportService` es un servicio `%CSP.REST`. Recibe un `POST /chat` con una pregunta en JSON, crea el `Learning.Agent.Support` que construiste en los Labs 04–05, abre una sesión y llama a `agent.Chat()`. La respuesta del agente vuelve como JSON. Por tanto, no añade otro agente ni otra lógica de negocio: es una capa fina que traduce entre HTTP y el agente AI Hub.
 
 ```mermaid
-flowchart TD
+flowchart LR
     Client[Cliente HTTP<br/>curl, web o script] -->|POST /api/support/chat| REST[Learning.REST.SupportService<br/>%CSP.REST]
     REST --> Agent[Learning.Agent.Support<br/>AI Hub en IRIS]
     Agent --> Tools[ToolSet + política<br/>solo lectura]

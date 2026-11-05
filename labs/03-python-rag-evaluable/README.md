@@ -32,7 +32,7 @@ Esto sirve para detectar regresiones cuando cambias el chunking, los documentos,
 El recorrido principal de este lab no llama a OpenRouter. Así los resultados son deterministas, no consumen créditos y sirven para detectar si un cambio en el chunking, el modelo de embeddings o el umbral ha empeorado la recuperación.
 
 ```mermaid
-flowchart TD
+flowchart LR
     Cases[Casos versionados] --> Question[Pregunta]
     Question --> RAG[RAG sobre IRIS]
     RAG --> Evidence[Fuente, citas o abstención]

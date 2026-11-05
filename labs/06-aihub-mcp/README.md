@@ -9,7 +9,7 @@ El recorrido es deliberadamente comprobable: primero instalamos el endpoint en I
 ## Las piezas y el recorrido de una llamada
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Client[Cliente MCP]
         direction TB
         Consumer[Python u OpenCode]
@@ -28,8 +28,8 @@ flowchart TB
         Data[(Datos de IRIS)]
         Endpoint --> Service --> ToolSet --> Policy --> Tools --> Data
     end
-    Consumer -->|JSON-RPC por stdio| Bridge
-    Bridge -->|wgproto · puerto 1972| Endpoint
+    Client -->|JSON-RPC por stdio| Gateway
+    Gateway -->|wgproto · puerto 1972| IRIS
     classDef input fill:#E7F0F8,stroke:#2B648E,color:#18344D,stroke-width:1.5px;
     classDef process fill:#EEF3F7,stroke:#617A8A,color:#263E50,stroke-width:1.5px;
     classDef iris fill:#D7EBE8,stroke:#19706C,color:#174743,stroke-width:1.5px;

@@ -24,7 +24,7 @@ En este lab verás agente, herramientas y política. En el Lab 05 añadiremos un
 - `Learning.Agent.Support`: la configuración de agente AI Hub y sus sesiones.
 
 ```mermaid
-flowchart TB
+flowchart LR
     Question[Pregunta] --> Agent[Agente AI Hub]
     Agent --> ToolSet[ToolSet de soporte]
     ToolSet --> Policy[Política: allow-list]

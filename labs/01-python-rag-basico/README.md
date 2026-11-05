@@ -28,26 +28,32 @@ No hace falta memorizar las clases. La idea importante es distinguir qué hace c
 
 ```mermaid
 flowchart TD
-    subgraph Local[1. Recuperación local]
+    subgraph Prepare[1. Preparar en memoria]
+        direction LR
         Docs[Documentos Markdown] --> Chunks[Chunks con fuente]
         Chunks --> ChunkEmbedding[Embeddings de chunks]
         ChunkEmbedding --> Store[InMemoryVectorStore]
+    end
+    subgraph Retrieve[2. Recuperar evidencia]
+        direction LR
         Question[Pregunta] --> QueryEmbedding[Embedding de la pregunta]
-        Store --> Search[Búsqueda vectorial]
-        QueryEmbedding --> Search
+        QueryEmbedding --> Search[Búsqueda vectorial]
         Search --> Context[Contexto recuperado y citas]
     end
-    subgraph RAG[2. Generación opcional]
-        Context --> LLM[OpenRouter]
-        LLM --> Answer[Respuesta RAG]
+    subgraph RAG[3. Generación opcional]
+        direction LR
+        LLM[OpenRouter] --> Answer[Respuesta RAG]
     end
+    Prepare -->|Consultar el almacén| Retrieve
+    Retrieve -->|Contexto y citas| RAG
     classDef input fill:#E7F0F8,stroke:#2B648E,color:#18344D,stroke-width:1.5px;
     classDef process fill:#EEF3F7,stroke:#617A8A,color:#263E50,stroke-width:1.5px;
     classDef generation fill:#E8F4EE,stroke:#3A7D5A,color:#214B35,stroke-width:1.5px;
     class Docs,Question input;
     class Chunks,ChunkEmbedding,QueryEmbedding,Store,Search,Context process;
     class LLM,Answer generation;
-    style Local fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
+    style Prepare fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
+    style Retrieve fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
     style RAG fill:#F7F9FB,stroke:#9AACBA,color:#18344D,stroke-width:1.5px
 ```
 

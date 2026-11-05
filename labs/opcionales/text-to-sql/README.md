@@ -3,12 +3,12 @@
 Aquí el agente convierte una pregunta en una consulta SQL de solo lectura. Es una ampliación para después de los Labs 04–06: ya conoces agentes, ToolSets y políticas. Ahora aplicas esa misma idea a analítica.
 
 ```mermaid
-flowchart TB
-    Question[Pregunta en lenguaje natural] --> Agent[Learning.Agent.Analytics]
+flowchart LR
+    Question[Pregunta en<br/>lenguaje natural] --> Agent[Agente de analítica]
     Agent --> Tool[%AI.Tools.SQL]
-    Tool --> Policy[Learning.Policy.SQLAllowList]
-    Policy -->|SELECT autorizada| SQL[(IRIS SQL\n4 tablas demo)]
-    SQL --> Result[Filas y respuesta en español]
+    Tool --> Policy[Política SQLAllowList]
+    Policy -->|SELECT autorizada| SQL[(IRIS SQL<br/>4 tablas demo)]
+    SQL --> Result[Filas y respuesta<br/>en español]
     Policy -->|fuera de alcance| Denied[Operación denegada]
     classDef input fill:#E7F0F8,stroke:#2B648E,color:#18344D,stroke-width:1.5px;
     classDef process fill:#EEF3F7,stroke:#617A8A,color:#263E50,stroke-width:1.5px;

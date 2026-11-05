@@ -13,7 +13,7 @@
   "objectscript.conn": {
     "server": "curso-iris",
     "ns": "USER",
-    "active": false
+    "active": true
   },
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
   "python.envFile": "${workspaceFolder}/.env"

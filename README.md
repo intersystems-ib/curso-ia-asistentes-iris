@@ -50,32 +50,19 @@ VS Code es el entorno recomendado: abre los notebooks y selecciona `.venv` como 
 
 ## Inicio rápido
 
-Si el instructor te ha asignado una máquina AWS, empieza por la
-[guía de acceso del alumno](docs/guia-acceso-aws-alumno.md) para conectar con
-VS Code y configurar tu clave OpenRouter.
+Si el instructor te ha asignado una máquina AWS, empieza por la [guía de acceso del alumno](docs/guia-acceso-aws-alumno.md) para conectar con VS Code y configurar tu clave OpenRouter.
 
-Empieza por el [Lab 00 · Preparar el entorno](labs/00-setup/README.md).
-Allí se distingue entre una máquina facilitada por el instructor y una
-instalación en tu equipo. La configuración de `.env`, Docker, Python y los
-datos demo se prepara una vez y se reutiliza durante el curso.
+Empieza por el [Lab 00 · Preparar el entorno](labs/00-setup/README.md). Allí se distingue entre una máquina facilitada por el instructor y una instalación en tu equipo. La configuración de `.env`, Docker, Python y los datos demo se prepara una vez y se reutiliza durante el curso.
 
-Si ya tienes el entorno listo, pasa al Lab 01. Cada lab indica sus requisitos
-y qué preparación nueva añade. No necesitas reinstalar las dependencias base.
-Los comandos se ejecutan desde la raíz del repositorio, en la máquina donde
-está el entorno del curso.
+Si ya tienes el entorno listo, pasa al Lab 01. Cada lab indica sus requisitos y qué preparación nueva añade. No necesitas reinstalar las dependencias base. Los comandos se ejecutan desde la raíz del repositorio, en la máquina donde está el entorno del curso.
 
-La generación usa OpenRouter con GPT-OSS 20B por defecto. Configúralo una vez
-siguiendo [la configuración de la clave](docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris) cuando vayas a generar
-respuestas. Los embeddings son locales y las comprobaciones sin LLM no
-necesitan esa clave.
+La generación usa OpenRouter con GPT-OSS 20B por defecto. Configúralo una vez siguiendo [la configuración de la clave](docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris) cuando vayas a generar respuestas. Los embeddings son locales y las comprobaciones sin LLM no necesitan esa clave.
 
 ## Recorrido base
 
 Sigue los labs en este orden. En los Labs 01–03 el notebook es el recorrido para aprender paso a paso. El script de terminal repite el mismo flujo de forma compacta. Los Labs 04–06 se trabajan directamente en ObjectScript porque ahí vive AI Hub.
 
-Puedes elegir notebook o script. No es obligatorio ejecutar ambos. Si los
-combinas, conserva lo ya preparado: en el Lab 02 la tabla y el índice se crean
-una sola vez.
+Puedes elegir notebook o script. No es obligatorio ejecutar ambos. Si los combinas, conserva lo ya preparado: en el Lab 02 la tabla y el índice se crean una sola vez.
 
 | Lab | Construyes y compruebas |
 | --- | --- |
@@ -116,7 +103,4 @@ Para el trabajo final, parte de [la plantilla de proyecto](plantillas-proyecto/p
 
 Los ejemplos son docentes. Las herramientas del recorrido base son de solo lectura y el ejemplo Text-to-SQL permite únicamente consultas `SELECT` sobre las cuatro tablas demo. No copies estas configuraciones como política de producción sin revisarlas, no pongas secretos en Git y no pruebes con datos reales.
 
-La imagen del laboratorio es
-`docker.iscinternal.com/docker-intersystems/intersystems/iris-community:2027.1.0AI.109.0`.
-La configuración actual utiliza OpenRouter en todo el curso,
-con GPT-OSS 20B por defecto.
+La imagen del laboratorio es `docker.iscinternal.com/docker-intersystems/intersystems/iris-community:2027.1.0AI.109.0`. La configuración actual utiliza OpenRouter en todo el curso, con GPT-OSS 20B por defecto.

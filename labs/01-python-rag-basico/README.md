@@ -20,6 +20,8 @@ El lab usa `learning_ai_rag`, una biblioteca Python pequeña que viene incluida 
 - `InMemoryVectorStore` guarda temporalmente los chunks y vectores, y busca los más parecidos a una pregunta.
 - `RAGPipeline` aplica el umbral de similitud, amplía a secciones completas y, sólo si se lo pides, se lo entrega al generador de OpenRouter.
 
+Una curiosidad: la búsqueda vectorial está hecha directamente con NumPy. `InMemoryVectorStore` guarda los embeddings en una matriz y los normaliza. Para cada pregunta, calcula `scores = self.embeddings @ query_vector`: el producto escalar de vectores normalizados equivale a su similitud coseno. Después ordena las puntuaciones y devuelve los fragmentos más parecidos. Es una búsqueda exacta que compara con todos los vectores, sin un índice como HNSW. Para el corpus pequeño del lab, permite ver el mecanismo en unas pocas líneas de [store.py](../../packages/learning_ai_rag/learning_ai_rag/store.py).
+
 La búsqueda recoge hasta nueve fragmentos candidatos, reordena coincidencias cercanas usando también los títulos de documento y sección y entrega hasta tres secciones distintas. Cada coincidencia de título añade 0,05 a la puntuación usada para ordenar. El valor de similitud mostrado sigue siendo el coseno original. No se envía todo el documento ni todo el corpus. El identificador de cita es el del fragmento que originó la selección y el texto expuesto es su sección completa.
 
 No hace falta memorizar las clases. La idea importante es distinguir qué hace cada una: leer, partir, representar, buscar y —al final— redactar usando la evidencia. En el notebook las iremos usando una por una.

@@ -2,9 +2,21 @@
 
 Esta ampliación parte del Lab 04. Conserva el agente de soporte, sus instrucciones, sus herramientas y su política. Cambia únicamente de dónde obtiene el proveedor, el modelo y la credencial.
 
-- **Config Store** guarda la configuración del LLM y una referencia al secreto.
-- **Wallet** guarda la clave, protegida por recursos de IRIS.
-- **El agente** declara `PROVIDERCONFIG` y `%Init()` resuelve la configuración.
+## Qué son Config Store y Wallet
+
+**Config Store** es el almacén de configuraciones de IRIS. Permite guardar un conjunto de parámetros con un nombre, validarlos según el tipo de configuración y controlar quién puede consultarlos o modificarlos. En este lab guardaremos el proveedor OpenRouter, el modelo y una referencia a su credencial bajo el nombre `AI.LLM.learning-support`. La aplicación utiliza ese nombre para recuperar la configuración. Puedes consultar la [referencia de la API `%ConfigStore.Configuration`](https://docs.intersystems.com/iris20262/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25ConfigStore.Configuration).
+
+**Wallet**, o **Secure Wallet**, es el almacén de secretos de IRIS. Un secreto es un dato sensible que necesita una aplicación, como una contraseña o una clave de API. Wallet organiza los secretos en colecciones y controla su acceso mediante recursos de seguridad de IRIS. En este lab, la colección `LearningAISecrets` contendrá el secreto `OpenRouter`, con la clave en el campo `api_key`. La documentación de IRIS lo explica en [Secure Wallet](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_secrets_mgmt).
+
+Ambos componentes se complementan: Config Store guarda los parámetros y la referencia al secreto, mientras que Wallet guarda la clave. La referencia `secret://LearningAISecrets.OpenRouter#api_key` identifica qué campo del secreto debe utilizarse, sin incluir su valor en la configuración.
+
+| Elemento del ejercicio | Qué contiene |
+| --- | --- |
+| Configuración `AI.LLM.learning-support` | Proveedor, modelo y referencia a la clave. |
+| Secreto `LearningAISecrets.OpenRouter` | La clave de OpenRouter en el campo `api_key`. |
+| Agente `ConfiguredSupport` | El nombre de la configuración en `PROVIDERCONFIG`. |
+
+Al llamar a `%Init()`, AI Hub lee la configuración y resuelve la referencia a Wallet para crear el proveedor. Las instrucciones del agente siguen en `XData INSTRUCTIONS`. Config Store y Wallet gestionan los parámetros de conexión y las credenciales.
 
 El recorrido principal sigue usando `.env`. Aquí copiamos su clave a Wallet una vez para practicar, sin escribirla en el código ni mostrarla en la terminal. En una aplicación desplegada, un administrador puede aprovisionar el secreto por separado. Este ejercicio no elimina ni modifica tu `.env`.
 
@@ -120,6 +132,8 @@ Eliminar la colección elimina también sus secretos. Hazlo sólo si sigue siend
 
 ## Referencias
 
+- [Secure Wallet: gestión de secretos en IRIS](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_secrets_mgmt).
+- [Referencia de `%ConfigStore.Configuration`](https://docs.intersystems.com/iris20262/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25ConfigStore.Configuration).
 - [Guía ObjectScript de AI Hub](https://github.com/intersystems-community/ai-hub-eap/blob/master/ObjectScript_SDK_Guide.md#configuration-variables).
 - [Config Store y Wallet](https://github.com/intersystems-community/ai-hub-eap/blob/master/Config_Store_Guide.md).
 

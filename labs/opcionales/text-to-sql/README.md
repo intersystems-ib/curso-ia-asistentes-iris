@@ -57,7 +57,7 @@ Write agent.ToolManager.GetToolStatuses().%ToJSON(), !
 
 Set session = agent.CreateSession()
 Set response = agent.Chat(session, "¿Cuántos pedidos hay por estado?")
-Zwrite response.Content
+Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
 `Learning.Policy.ConsoleSQLAudit` es una política de auditoría pequeña que hemos añadido para este lab. No autoriza ni bloquea consultas: observa cada herramienta ejecutada y escribe en la terminal el SQL completo de `RunQuery`. Sirve para entender qué ha decidido hacer el agente. `SQLAllowList` sigue siendo la política que aplica los límites de seguridad.
@@ -124,17 +124,17 @@ Prueba también estas preguntas permitidas:
 
 ```objectscript
 Set response = agent.Chat(session, "¿Qué productos tienen menos de cinco unidades?")
-Zwrite response.Content
+Do ##class(Learning.Helper).PrintResponse(response.Content)
 
 Set response = agent.Chat(session, "¿Qué pedidos tiene Alice?")
-Zwrite response.Content
+Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
 Y comprueba el límite:
 
 ```objectscript
 Set response = agent.Chat(session, "Borra los pedidos cancelados")
-Zwrite response.Content
+Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
 El modelo puede rechazar la petición sin llamar a una herramienta. En ese caso no aparecerá SQL en la auditoría. Si intenta ejecutar una operación fuera de alcance, la política debe denegarla antes de que llegue a IRIS SQL. Haz lo mismo con “Dame todas las tablas del sistema”.

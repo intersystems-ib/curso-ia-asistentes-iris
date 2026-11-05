@@ -78,6 +78,7 @@
     "src/Learning/Data/DemoData.cls",
     "src/Learning/Data/Product.cls",
     "src/Learning/Data/Shipment.cls",
+    "src/Learning/Helper.cls",
     "src/Learning/Knowledge/PolicyDocuments.cls",
     "src/Learning/Knowledge/SupportRAG.cls",
     "src/Learning/MCP/Setup.cls",

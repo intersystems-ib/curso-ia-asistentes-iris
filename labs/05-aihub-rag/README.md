@@ -76,7 +76,7 @@ Set sc = ##class(Learning.Knowledge.SupportRAG).AddToSupportAgent(.agent)
 Do agent.ToolManager.SetAuditPolicy(##class(%AI.Policy.ConsoleAudit).%New())
 Set session = agent.CreateSession()
 Set response = agent.Chat(session, "¿Qué cubre la garantía de SKU-AUD-001?")
-Write response.Content, !
+Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
 La primera vez crea la tabla e índice de la base de conocimiento con FastEmbed, sin una llamada cloud para los embeddings. Si repites el ejercicio, usa un nombre de tabla nuevo o limpia deliberadamente el vector store de práctica: es una escritura persistente, no una comprobación.
@@ -150,7 +150,7 @@ Write agent.ToolManager.GetToolStatuses().%ToJSON(), !
 Do agent.ToolManager.SetAuditPolicy(##class(%AI.Policy.ConsoleAudit).%New())
 Set session = agent.CreateSession()
 Set response = agent.Chat(session, "ORD-003 figura como entregado. ¿Puedo devolverlo y qué plazo tengo?")
-Write response.Content, !
+Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
 Después de la conversación puedes comprobar la activación:

@@ -96,9 +96,7 @@ Hasta aquí no has llamado al modelo. `%Init()` resuelve la referencia a Wallet 
 Para generar una respuesta real, con consumo de OpenRouter:
 
 ```objectscript
-// Máximo de 10 iteraciones del agente para responder cada pregunta.
-// Cada iteración puede incluir varias llamadas a herramientas.
-Set session = agent.CreateSession({"max_iterations":10})
+Set session = agent.CreateSession({"max_iterations":10}) // Máx. iteraciones por pregunta (varias llamadas a herramientas por iteración).
 Set response = agent.Chat(session, "¿Dónde está ORD-002?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```

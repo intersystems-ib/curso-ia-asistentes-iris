@@ -44,17 +44,21 @@ Este lab construye una `KnowledgeBase` nativa de AI Hub. Jupyter añadiría una 
 
 Los embeddings se crean localmente con FastEmbed. Los documentos no se duplican en ObjectScript: se leen desde `datos-demo/knowledge`, disponible dentro del contenedor en `/app/datos-demo/knowledge` gracias al volumen de Docker Compose.
 
-Abre o reutiliza una [terminal ObjectScript en USER](../00-setup/README.md#abrir-una-terminal-objectscript).
+Desde una terminal de VS Code, en la raíz del proyecto, abre una sesión ObjectScript en `USER`:
+
+```bash
+docker compose exec iris-aihub iris session IRIS -U USER
+```
 
 ## De dónde sale `search_support_policies`
 
-En este ejemplo se conserva la búsqueda nativa de AI Hub, pero se amplían sus resultados para que el agente lea reglas y excepciones juntas:
+La herramienta que ve el agente combina una `KnowledgeBase` nativa de AI Hub con una clase del curso que devuelve documentos completos. Sigue este recorrido con las clases abiertas:
 
-1. `Learning.Knowledge.SupportRAG.Build()` crea la `KnowledgeBase` nativa con FastEmbed y el vector store de IRIS, igual que antes.
-2. `Learning.Knowledge.PolicyDocuments` registra la búsqueda nativa en un `ToolManager` interno y expone al agente `search_support_policies`.
-3. Si el agente indica un `topic` concreto, la herramienta lee directamente la política autorizada de ese tema: `garantia`, `devoluciones`, `cancelaciones`, `envios`, `cambios` o `productos`. Devuelve un documento completo. Por ejemplo, «cancelación de ruido» en la descripción de un producto no debe redirigir una consulta de garantía a la política de cancelaciones.
-4. Con `topic=general`, la consulta semántica localiza fragmentos y se amplían los primeros **dos documentos distintos**, conservando el orden nativo.
-5. El agente recibe `text` completo y `metadata.source`, `sourcePath`, `retrievalMode=full_document` y `selection=topic` o `semantic`. Sólo la ruta semántica añade `matchedChunkId`. `sourceUrl=null` indica un archivo local.
+1. **Crear e indexar la base de conocimiento.** Abre [SupportRAG.cls](../../src/Learning/Knowledge/SupportRAG.cls) y mira `Build()`. Conecta FastEmbed con el vector store de IRIS y crea la `KnowledgeBase` con el nombre `search_support_policies`. Fíjate después en `AddVersionedDocuments()`: lee los Markdown y guarda `metadata.source`, que permitirá identificar el documento al recuperar un fragmento.
+2. **Conectar la herramienta al agente.** En la misma clase, sigue `AddToSupportAgent()`: inicializa el agente, construye la base de conocimiento y llama a `PolicyDocuments.AddToAgent()`. Abre [PolicyDocuments.cls](../../src/Learning/Knowledge/PolicyDocuments.cls) y compara su `XData Definition` con `AddToAgent()`. El XML publica `search_support_policies` enlazada al método `Search`. La búsqueda nativa se registra en un `SearchManager` interno, mientras que el agente recibe la herramienta de esta clase. Son dos herramientas con el mismo nombre, en gestores distintos.
+3. **Seleccionar una política por tema.** En `PolicyDocuments.Search()`, fíjate en la rama `topic` distinta de `general`. `TopicSource()` traduce el tema a un archivo autorizado y `ReadDocument()` devuelve su texto completo. Esta ruta no hace búsqueda vectorial. Por ejemplo, `topic=garantia` selecciona la política de garantía aunque la descripción del producto mencione «cancelación de ruido».
+4. **Buscar por significado cuando no hay un tema concreto.** Sigue la otra rama de `Search()`, con `topic=general`. `SearchManager.ExecuteTool()` ejecuta la búsqueda semántica nativa con `query`. Después, `ExpandHits()` usa la fuente de cada fragmento para leer los primeros **dos documentos distintos**, conservando el orden de relevancia y descartando fuentes no autorizadas.
+5. **Entender la evidencia devuelta.** En `ReadDocument()`, observa cómo se construyen `text` y `metadata`: el agente recibe el documento completo, su archivo en `source`, `sourcePath`, `retrievalMode=full_document` y `selection=topic` o `semantic`. Sólo la ruta semántica añade `matchedChunkId`. `sourceUrl=null` indica que la fuente es un archivo local, no un enlace web.
 
 Los documentos son breves (193–305 palabras). Una consulta de garantía debe recuperar su política completa, incluidos los 12 meses de reacondicionados y las exclusiones de cobertura. La duración del catálogo no acredita por sí sola las condiciones de garantía. Ambas variantes del agente reciben esa instrucción.
 
@@ -66,7 +70,7 @@ La herramienta sólo permite abrir los seis archivos del corpus versionado. Una 
 Do ##class(Learning.Test.PolicyDocuments).Run()
 ```
 
-Por eso la política `Learning.Policy.ReadOnlySupport` la autoriza de forma explícita. Igual que `GetOrder`, pasa por el `ToolManager` y queda auditada.
+Abre también [ReadOnlySupport.cls](../../src/Learning/Policy/ReadOnlySupport.cls) y busca `search_support_policies` en `%CanExecute()`: la búsqueda se autoriza de forma explícita, igual que las herramientas de pedidos. Todas pasan por el `ToolManager`. Al activar la auditoría en el siguiente bloque, podrás observar sus llamadas. Para ver qué comprueba la prueba anterior, abre [Learning.Test.PolicyDocuments](../../src/Learning/Test/PolicyDocuments.cls) y sigue `Run()`.
 
 ## Construye, activa el trace y consulta
 
@@ -75,9 +79,7 @@ Primero creamos el agente y añadimos una auditoría de consola. No es un adorno
 ```objectscript
 Set sc = ##class(Learning.Knowledge.SupportRAG).AddToSupportAgent(.agent)
 Do agent.ToolManager.SetAuditPolicy(##class(%AI.Policy.ConsoleAudit).%New())
-// Máximo de 10 iteraciones del agente para responder cada pregunta.
-// Cada iteración puede incluir varias llamadas a herramientas.
-Set session = agent.CreateSession({"max_iterations":10})
+Set session = agent.CreateSession({"max_iterations":10}) // Máx. iteraciones por pregunta (varias llamadas a herramientas por iteración).
 Set response = agent.Chat(session, "¿Qué cubre la garantía de SKU-AUD-001?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```

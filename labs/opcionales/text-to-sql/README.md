@@ -56,9 +56,7 @@ Do agent.ToolManager.SetAuditPolicy(##class(Learning.Policy.ConsoleSQLAudit).%Ne
 ; Opcional: confirma qué herramientas ha registrado AI Hub.
 Write agent.ToolManager.GetToolStatuses().%ToJSON(), !
 
-// Máximo de 10 iteraciones del agente para responder cada pregunta.
-// Cada iteración puede incluir varias llamadas a herramientas.
-Set session = agent.CreateSession({"max_iterations":10})
+Set session = agent.CreateSession({"max_iterations":10}) // Máx. iteraciones por pregunta (varias llamadas a herramientas por iteración).
 Set response = agent.Chat(session, "¿Cuántos pedidos hay por estado?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
@@ -117,7 +115,6 @@ La instrucción por defecto está en `XData INSTRUCTIONS` de `Learning.Agent.Ana
 Set agent = ##class(Learning.Agent.Analytics).%New()
 Set sc = agent.%Init()
 Do $System.Status.DisplayError(sc)
-; Continúa sólo si sc es correcto.
 Set agent.SystemPrompt = agent.SystemPrompt _ $Char(10) _ "Responde muy brevemente en texto plano."
 Do agent.ToolManager.SetAuditPolicy(##class(Learning.Policy.ConsoleSQLAudit).%New())
 Set session = agent.CreateSession({"max_iterations":10})

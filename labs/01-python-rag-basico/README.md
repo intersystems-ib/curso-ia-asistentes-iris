@@ -122,7 +122,7 @@ python labs/01-python-rag-basico/rag_basico.py --question "¿Qué garantía tien
 
 ## Añadir la generación RAG
 
-Si todavía no has configurado OpenRouter, sigue [la guía compartida](../../docs/openrouter.md).
+Si todavía no has configurado OpenRouter, sigue [la guía compartida](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 Reutiliza la clave y el modelo de `.env`. El modelo por defecto es `openai/gpt-oss-20b`.
 
 ```bash

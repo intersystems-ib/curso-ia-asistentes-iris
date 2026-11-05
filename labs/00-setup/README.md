@@ -9,7 +9,7 @@ Los demás labs lo reutilizan. Este laboratorio no necesita una clave OpenRouter
 ## Elige tu punto de partida
 
 - **Máquina preparada por el instructor:** abre el repositorio en la máquina
-  asignada siguiendo sus instrucciones de acceso. Usa las credenciales y el
+  asignada siguiendo la [guía de acceso del alumno](../../docs/guia-acceso-aws-alumno.md). Usa las credenciales y el
   entorno Python facilitados. Si falta `.env`, créalo desde `.env.example`
   y ajusta la conexión indicada por el instructor. Pasa a
   [Comprobación](#comprobación). Prepara sólo lo que falte según ese resultado.
@@ -32,12 +32,6 @@ Si la vista previa integrada ya muestra los diagramas Mermaid, puedes usarla
 sin instalar esa extensión. Con Remote SSH, VS Code indica si cada extensión
 debe instalarse localmente o en la máquina remota.
 
-## Entorno preparado por el instructor
-
-Si recibes una máquina con IRIS ya arrancado, sigue primero
-[la guía de conexión](../../docs/entorno-alumno.md) y no reconstruyas el contenedor.
-Los pasos siguientes corresponden a una instalación desde cero.
-
 ## Preparación
 
 1. Abre la carpeta del repositorio en Visual Studio Code. Instala las
@@ -48,7 +42,7 @@ Los pasos siguientes corresponden a una instalación desde cero.
    En Docker local, la conexión predeterminada es `localhost:1972`, namespace
    `USER`, usuario `superuser` y contraseña `SYS`.
 3. Para generar respuestas, configura OpenRouter una vez siguiendo
-   [su guía](../../docs/openrouter.md). Puedes dejar la clave vacía por ahora.
+   [su guía](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris). Puedes dejar la clave vacía por ahora.
    Si ya la tienes, configúrala antes de crear el contenedor.
 4. Arranca el entorno:
 
@@ -132,7 +126,7 @@ Si usas Docker local y el contenedor está detenido, arráncalo con
 `docker compose up -d iris-aihub`. Reutiliza `.env` y los datos persistidos.
 
 Recrear el contenedor sólo es necesario al cambiar su configuración, por
-ejemplo las variables de OpenRouter. Consulta [la guía](../../docs/openrouter.md).
+ejemplo las variables de OpenRouter. Consulta [la guía](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 En una máquina administrada por el instructor, sigue sus indicaciones para
 cualquier cambio de configuración.
 

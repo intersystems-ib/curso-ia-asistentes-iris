@@ -64,7 +64,7 @@ Necesitas IRIS y los datos demo preparados y comprobados en el
 completa esa preparación primero. La tabla vectorial de los Labs 02–03 no
 es necesaria. En este lab probarás las herramientas, su política y el agente.
 
-Para conversar con el modelo, reutiliza la [configuración de OpenRouter](../../docs/openrouter.md).
+Para conversar con el modelo, reutiliza la [configuración de OpenRouter](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 Las pruebas de herramientas y permisos pueden ejecutarse sin clave.
 
 ## Recorrido principal: terminal ObjectScript
@@ -121,7 +121,7 @@ Write response.Content, !
 
 El agente usa OpenRouter con `openai/gpt-oss-20b` por defecto, igual que los
 Labs Python. Configura `OPENROUTER_API_KEY` y, si quieres otro modelo,
-`OPENROUTER_MODEL` en `.env`. Consulta [la configuración](../../docs/openrouter.md).
+`OPENROUTER_MODEL` en `.env`. Consulta [la configuración](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 
 La clave es opcional. Sin ella, el núcleo del lab —datos, ToolSet y política—
 sigue siendo completamente comprobable.

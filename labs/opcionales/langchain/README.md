@@ -37,7 +37,7 @@ conserve sus metadatos de procedencia.
 Necesitas el [entorno Python del Lab 00](../../00-setup/README.md#entorno-python-para-los-labs-0103)
 y los conceptos del [Lab 01](../../01-python-rag-basico/README.md).
 IRIS no interviene en esta ampliación. Reutiliza `.venv` y, para generar,
-la [configuración de OpenRouter](../../../docs/openrouter.md).
+la [configuración de OpenRouter](../../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 
 Desde la raíz, activa el entorno e instala sólo el extra de LangChain una vez:
 

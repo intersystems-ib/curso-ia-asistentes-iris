@@ -40,12 +40,6 @@ flowchart TB
 
 El dominio es una tienda demo: pedidos, catálogo, envíos y políticas de soporte. No hay datos reales ni secretos versionados.
 
-## Entorno para alumnos
-
-Si el instructor te facilita una máquina ya preparada, empieza por
-[la conexión con VS Code y SSH](docs/entorno-alumno.md). No necesitas reconstruir
-el contenedor ni ejecutar Docker en tu portátil.
-
 ## Requisitos
 
 - Docker Desktop, si preparas el entorno en tu equipo.
@@ -71,7 +65,7 @@ Los comandos se ejecutan desde la raíz del repositorio, en la máquina donde
 está el entorno del curso.
 
 La generación usa OpenRouter con GPT-OSS 20B por defecto. Configúralo una vez
-siguiendo [la guía de OpenRouter](docs/openrouter.md) cuando vayas a generar
+siguiendo [la configuración de la clave](docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris) cuando vayas a generar
 respuestas. Los embeddings son locales y las comprobaciones sin LLM no
 necesitan esa clave.
 
@@ -124,5 +118,5 @@ Los ejemplos son docentes. Las herramientas del recorrido base son de solo lectu
 
 La imagen del laboratorio es
 `docker.iscinternal.com/docker-intersystems/intersystems/iris-community:2027.1.0AI.109.0`.
-La configuración actual utiliza [OpenRouter](docs/openrouter.md) en todo el curso,
+La configuración actual utiliza OpenRouter en todo el curso,
 con GPT-OSS 20B por defecto.

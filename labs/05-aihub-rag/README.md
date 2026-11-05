@@ -37,7 +37,7 @@ flowchart TB
 
 Necesitas haber comprobado las herramientas y la política del
 [Lab 04](../04-iris-y-aihub/README.md), con IRIS y los datos demo disponibles.
-Para conversar, reutiliza la [configuración de OpenRouter](../../docs/openrouter.md).
+Para conversar, reutiliza la [configuración de OpenRouter](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 No necesitas instalar dependencias Python en `.venv` para este recorrido.
 
 Aquí crearás una base de conocimiento nativa con FastEmbed, distinta de la

@@ -39,7 +39,7 @@ La política es deliberadamente pequeña y docente: hace visible el control de a
 
 Necesitas IRIS y los datos demo comprobados en el [Lab 00](../../00-setup/README.md#comprobación)
 y los conceptos de agente, ToolSet y política del [Lab 04](../../04-iris-y-aihub/README.md).
-Reutiliza la [configuración de OpenRouter](../../../docs/openrouter.md).
+Reutiliza la [configuración de OpenRouter](../../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 Los Labs 05 y 06 no son requisitos técnicos de esta ampliación.
 
 Aquí crearás el agente de analítica. No necesitas nuevas tablas ni dependencias

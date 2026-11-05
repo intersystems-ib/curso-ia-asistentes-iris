@@ -1,272 +1,297 @@
-# Acceder al entorno AWS del curso
+# Tu entorno del curso en AWS
 
-Esta guía sirve para alumnos e instructor. Al terminar tendrás VS Code conectado
-a tu máquina, el repo abierto y tu clave OpenRouter configurada.
+Conecta VS Code a tu máquina del curso, configura OpenRouter y abre IRIS.
+El instructor ya ha preparado Ubuntu, Docker, IRIS, el repositorio, `.env`
+y el entorno Python `.venv`. Los contenedores están detenidos.
 
-El instructor prepara Ubuntu, Docker, IRIS, el repo y el entorno Python.
-En tu portátil necesitas VS Code, la extensión Remote - SSH y un cliente SSH.
-No necesitas una cuenta AWS, AWS CLI, Docker ni Python en el portátil.
+**En tu portátil sólo necesitas** [VS Code](https://code.visualstudio.com/),
+la extensión [Remote - SSH de Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+y un cliente SSH. No necesitas una cuenta AWS ni instalar Docker o Python.
 
-## 1. Reunir los datos de acceso
+> **💻 Dónde vas a trabajar**
+> VS Code se abre en tu portátil, pero los archivos, la terminal y Python se
+> ejecutan en tu máquina de AWS. Una vez conectado, usa la terminal de esa ventana.
 
-El instructor te entregará por separado:
+## 📋 Antes de empezar
 
-| Dato | Para qué sirve |
+Abre el correo de acceso que te enviará el instructor. Incluye:
+
+| Dato | Lo usarás para… |
 | --- | --- |
-| IP pública o nombre del servidor | Identificar tu máquina |
-| Usuario SSH, normalmente `ubuntu` | Entrar en Ubuntu |
-| Fichero `.pem` individual | Autenticar la conexión SSH |
+| Servidor y usuario SSH (`ubuntu`) | Conectar con tu máquina |
+| Nombre de la máquina y carpeta del curso | Identificar tu entorno y abrir el proyecto |
+| Archivo `.pem` adjunto | Autenticar la conexión |
 | API key individual de OpenRouter | Generar respuestas en los labs |
-| Credenciales de IRIS | Conectar las extensiones y abrir el Portal |
 
-La carpeta del curso es `/home/ubuntu/curso-ia-asistentes-iris`.
-Los ejemplos usan `IP_DE_TU_MAQUINA` como marcador. Sustitúyelo por el dato
-recibido. No escribas claves reales en documentos, chats compartidos o notebooks.
+Descarga el `.pem` adjunto y guárdalo en tu portátil, fuera del repositorio.
+Anota su ruta completa y consérvalo para las próximas sesiones. No lo copies
+a AWS ni compartas su contenido.
 
-## 2. Preparar el portátil
+El instructor te facilitará también las credenciales de IRIS.
 
-Instala [Visual Studio Code](https://code.visualstudio.com/) y la extensión
-[Remote - SSH de Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh).
+---
 
-Guarda el `.pem` recibido en una carpeta de tu portátil, fuera del repo.
-Puedes utilizar la carpeta donde lo has descargado. Conserva su nombre y
-anota la ruta completa. No lo copies a la EC2 ni lo borres después de conectar.
+## 1. Añade tu conexión en VS Code
 
-## 3. Añadir la conexión desde VS Code
+Abre la **paleta de comandos** con `Cmd+Shift+P` en macOS o `Ctrl+Shift+P`
+en Windows y Linux. Ejecuta **Remote-SSH: Add New SSH Host...**.
 
-1. Abre la paleta de comandos con `Cmd+Shift+P` en macOS o `Ctrl+Shift+P`
-   en Windows y Linux.
-2. Ejecuta **Remote-SSH: Add New SSH Host...**.
-3. Introduce el comando de conexión, sustituyendo la ruta del `.pem` y la IP.
+*Puedes pulsar sobre las capturas para verlas a tamaño completo.*
 
-Ejemplo en macOS o Linux:
+<a href="../assets/vscode-remote-ssh-add-host.png"><img src="../assets/vscode-remote-ssh-add-host.png" alt="Paleta de VS Code con Remote-SSH: Add New SSH Host seleccionado" width="640"></a>
+
+Pega el comando que corresponda. Sustituye la ruta del `.pem` y
+`IP_DE_TU_MAQUINA` por el valor de **Servidor** del correo.
+Si recibiste otro usuario, sustituye `ubuntu`.
+
+**macOS o Linux**
 
 ```bash
 ssh -i "/RUTA/COMPLETA/A/TU/CLAVE.pem" ubuntu@IP_DE_TU_MAQUINA
 ```
 
-Ejemplo en Windows:
+**Windows**
 
 ```text
 ssh -i "C:/Users/TU_USUARIO/Downloads/CLAVE.pem" ubuntu@IP_DE_TU_MAQUINA
 ```
 
-Las comillas permiten utilizar rutas con espacios. Si el instructor te ha dado
-otro usuario, sustituye `ubuntu`.
+<a href="../assets/vscode-remote-ssh-connection-command.png"><img src="../assets/vscode-remote-ssh-connection-command.png" alt="Cuadro de VS Code para introducir el comando de conexión SSH" width="640"></a>
+
+*La captura usa una ruta y un servidor de ejemplo. Introduce los tuyos y pulsa Enter.*
 
 Cuando aparezca **Select SSH configuration file to update**, elige el archivo
-de tu usuario. Normalmente es la primera opción:
+de tu usuario, normalmente la primera opción:
 
-| Sistema | Opción que debes elegir |
+| Sistema | Archivo |
 | --- | --- |
 | macOS | `/Users/TU_USUARIO/.ssh/config` |
 | Linux | `/home/TU_USUARIO/.ssh/config` |
 | Windows | `C:\Users\TU_USUARIO\.ssh\config` |
 
-VS Code guarda la conexión automáticamente y conserva las que ya tengas.
-No necesitas abrir ni editar ese archivo. En macOS y Linux, no selecciones
-el archivo del sistema `/etc/ssh/ssh_config`.
+VS Code guarda la conexión. No necesitas editar ese archivo ni seleccionar
+el del sistema (`/etc/ssh/ssh_config`).
 
-## 4. Conectar VS Code y abrir el curso
+<a href="../assets/vscode-remote-ssh-config-file.png"><img src="../assets/vscode-remote-ssh-config-file.png" alt="Selector de configuración SSH con el archivo .ssh/config del usuario resaltado" width="640"></a>
 
-1. Pulsa **Connect** en el aviso de conexión añadida. También puedes abrir la
-   paleta y ejecutar **Remote-SSH: Connect to Host...**.
-2. Elige la IP o el nombre de la conexión que acabas de añadir. Si pregunta
-   por el sistema remoto, selecciona **Linux**.
-3. En la primera conexión, confirma con el instructor la huella del servidor
-   antes de aceptarla. Si aparece un error de permisos del `.pem`, consulta
-   [Permisos de la clave](#permisos-de-la-clave).
-4. Espera a que termine la preparación de VS Code Server. La primera vez puede tardar.
-5. Comprueba que la esquina inferior izquierda muestra **SSH:** seguido de tu servidor.
-6. Usa **File → Open Folder...** y abre `/home/ubuntu/curso-ia-asistentes-iris`.
-7. Abre **Terminal → New Terminal**.
+*Ejemplo en macOS. La ruta incluirá tu nombre de usuario.*
 
-En esa terminal, comprueba dónde estás trabajando:
+## 2. Conecta y abre la carpeta del curso
+
+1. Ejecuta **Remote-SSH: Connect to Host...** desde la paleta y elige tu servidor.
+2. Si pregunta por el sistema remoto, selecciona **Linux**. En la primera conexión,
+   confirma con el instructor la huella del servidor antes de aceptarla.
+3. Espera a que termine la preparación de VS Code Server. Comprueba que la esquina
+   inferior izquierda muestra **SSH:** seguido de tu servidor.
+4. Usa **File → Open Folder...** y abre esta carpeta:
+
+   ```text
+   /home/ubuntu/curso-ia-asistentes-iris
+   ```
+
+5. Abre **Terminal → New Terminal** y actualiza el curso:
+
+   ```bash
+   cd /home/ubuntu/curso-ia-asistentes-iris
+   git pull --ff-only
+   ```
+
+> **💡 A partir de aquí, usa la terminal remota de VS Code.**
+> Si falta la carpeta o falla la actualización, avisa al instructor.
+> No descartes archivos ni reinstales el entorno. Si la actualización requiere
+> cambios de dependencias o de IRIS, el instructor indicará cómo aplicarlos.
+
+## 3. Selecciona el Python del curso
+
+El entorno `.venv` ya está creado y tiene las dependencias instaladas.
+Sólo tienes que seleccionarlo y activarlo.
+
+1. Abre **Extensions**, busca `@recommended` e instala **Python**, **Jupyter** e
+   **InterSystems ObjectScript** en el servidor **SSH:** cuando VS Code lo ofrezca.
+   Remote - SSH se instala en el portátil.
+2. Ejecuta **Python: Select Interpreter** desde la paleta y selecciona esta ruta.
+   Si no aparece, usa la opción para introducirla manualmente:
+
+   ```text
+   /home/ubuntu/curso-ia-asistentes-iris/.venv/bin/python
+   ```
+
+3. Al abrir un notebook, pulsa **Select Kernel**, arriba a la derecha, y elige
+   ese mismo entorno `.venv`.
+
+<a href="../assets/vscode-remote-jupyter-kernel.png"><img src="../assets/vscode-remote-jupyter-kernel.png" alt="Selector de kernel del notebook con el entorno .venv del curso disponible" width="800"></a>
+
+*Elige `.venv`, que aparece como recomendado, con la ruta `.venv/bin/python`.*
+
+Para usar Python desde la terminal, activa también el entorno:
 
 ```bash
-whoami
-pwd
-```
-
-Debes ver `ubuntu` y `/home/ubuntu/curso-ia-asistentes-iris`.
-A partir de aquí, los comandos se ejecutan en esta terminal remota, salvo que
-la guía indique expresamente que corresponden al portátil.
-
-El repo público ya debe estar preparado en la máquina. Si la carpeta no existe,
-avisa al instructor antes de clonar o instalar nada.
-
-## 5. Seleccionar las extensiones y el entorno Python
-
-En **Extensions**, busca `@recommended`. Instala Python, Jupyter e InterSystems
-ObjectScript en el servidor **SSH:** conectado cuando VS Code ofrezca esa opción. Remote - SSH
-se instala en el portátil. Las recomendaciones no se instalan automáticamente.
-
-Abre la paleta, ejecuta **Python: Select Interpreter** y selecciona:
-
-```text
-/home/ubuntu/curso-ia-asistentes-iris/.venv/bin/python
-```
-
-Si no aparece, usa la opción para introducir la ruta del intérprete.
-En cada notebook, pulsa **Select Kernel** y elige ese mismo entorno Python.
-
-Para trabajar desde la terminal remota:
-
-```bash
-cd /home/ubuntu/curso-ia-asistentes-iris
 source .venv/bin/activate
 python --version
-docker compose ps
 ```
 
-Si falta `.venv` o Docker da un error de permisos, avisa al instructor.
-No vuelvas a crear el entorno ni reinstales las dependencias si ya están preparados.
-Si IRIS está detenido, arráncalo con:
+Si falta `.venv`, avisa al instructor.
 
-```bash
-docker compose up -d iris-aihub
-```
+## 4. Añade tu clave y arranca IRIS
 
-## 6. Configurar tu API key de OpenRouter
+**Edita el archivo preparado**
 
-En la terminal remota, crea `.env` sólo si todavía no existe y limita sus permisos:
-
-```bash
-test -f .env || cp .env.example .env
-chmod 600 .env
-```
-
-Abre el archivo `.env` desde el explorador de VS Code remoto. Introduce tu clave
-en `OPENROUTER_API_KEY` y conserva el modelo del curso:
+El archivo `.env` ya existe en la carpeta del curso. Ábrelo desde el explorador
+de VS Code remoto y pega la API key de tu correo en `OPENROUTER_API_KEY`.
+Conserva el modelo del curso y las demás variables:
 
 ```dotenv
 OPENROUTER_API_KEY=PEGA_AQUI_TU_CLAVE
 OPENROUTER_MODEL=openai/gpt-oss-20b
 ```
 
-Sustituye el marcador por la clave real, guarda el archivo y conserva las demás
-variables que haya preparado el instructor. No publiques `.env` en Git.
+**Arranca IRIS**
 
-La conexión Python a IRIS utiliza normalmente `IRIS_HOST=localhost` y
-`IRIS_PORT=1972`. Usa las credenciales IRIS facilitadas. La IP pública sirve
-para SSH. Python y las extensiones remotas se conectan a IRIS desde la EC2.
-
-Para que el contenedor de AI Hub reciba la clave nueva, ejecuta en la terminal
-remota de tu máquina individual:
+Guarda el archivo **antes de arrancar IRIS**. Los contenedores se han dejado
+detenidos con `docker compose stop`. Para levantar IRIS con tu configuración:
 
 ```bash
-docker compose up -d --force-recreate iris-aihub
+docker compose up -d iris-aihub
+docker compose ps
 ```
 
-Este comando interrumpe brevemente IRIS y recrea el contenedor con las variables
-actuales. Los datos de `irisdata` se conservan. Hazlo al configurar la clave o
-cuando cambies esas variables. Reiniciar el contenedor con `restart` no basta.
-No borres `irisdata`.
+Comprueba que `iris-aihub` aparece en ejecución. El arranque de IRIS puede tardar
+un poco. Si Docker da un error de permisos, avisa al instructor.
 
-Si ya tenías un notebook abierto, reinicia su kernel. Reinicia también las
-aplicaciones Python que estuvieran en marcha. Las variables exportadas en una
-terminal tienen prioridad sobre `.env`.
+> **💡 Usa `up -d` para arrancar con la configuración de `.env`.**
+> Docker Compose recrea el contenedor si detecta cambios en sus variables y
+> conserva los datos de `irisdata`. No necesitas reconstruir la imagen.
+> No borres `irisdata` ni publiques `.env` en Git.
 
-Puedes verificar que Python encuentra una clave sin mostrarla. Con `.venv`
-activo y desde la carpeta del curso:
+Si tenías notebooks o aplicaciones Python abiertos, reinicia sus kernels o procesos.
+La clave se usará al generar respuestas en Python y en los agentes de AI Hub.
+Los embeddings son locales y no necesitan esa clave.
 
-```bash
-python -c 'from dotenv import load_dotenv; import os; load_dotenv(".env"); print("Clave configurada:", bool(os.getenv("OPENROUTER_API_KEY")))'
-```
+## 5. Abre el Portal de IRIS
 
-Un resultado `True` confirma que hay un valor, no que la clave sea válida o
-tenga saldo. La prueba real de generación se hará cuando lo indique el lab o
-el instructor y consume créditos. Más detalle en [OpenRouter](openrouter.md).
-
-## 7. Abrir el Portal de IRIS y otras aplicaciones
-
-Desde la ventana remota de VS Code:
-
-1. Abre la pestaña **Ports**. Si no aparece, ejecuta **Ports: Focus on Ports View**.
+1. En la ventana remota, abre la pestaña **Ports**. Si no aparece, ejecuta
+   **Ports: Focus on Ports View** desde la paleta.
 2. Pulsa **Forward a Port** e introduce `52773`.
-3. Pulsa **Open in Browser** en la fila del puerto.
-4. Abre la ruta `/csp/sys/UtilHome.csp` en esa dirección para entrar al Portal.
-5. Utiliza las credenciales IRIS facilitadas por el instructor.
+3. Pulsa **Open in Browser** en esa fila. En la dirección que se abra,
+   usa la ruta `/csp/sys/UtilHome.csp`.
+4. Entra con las credenciales de IRIS facilitadas por el instructor.
 
-Si el puerto local también es `52773`, la dirección del Portal será:
+<a href="../assets/vscode-remote-forward-port.png"><img src="../assets/vscode-remote-forward-port.png" alt="Pestaña Ports con el puerto 52773 reenviado a localhost:52773 y el icono para abrirlo en el navegador" width="760"></a>
 
-```text
-http://localhost:52773/csp/sys/UtilHome.csp
-```
+*En la fila de `52773`, pulsa el icono del globo para abrir el navegador.*
 
-Si VS Code asigna otro puerto local, usa el que muestre en **Forwarded Address**.
-El navegador se ejecuta en tu portátil y llega a IRIS mediante el túnel SSH.
-No necesitas abrir puertos adicionales en AWS ni instalar un navegador en EC2.
+Si el puerto local es `52773`, puedes abrir directamente:
 
-| Aplicación | Puerto remoto a reenviar |
+[**Abrir el Portal de IRIS**](http://localhost:52773/csp/sys/UtilHome.csp)
+
+Si VS Code asigna otro puerto local, usa el que muestre **Forwarded Address**.
+El navegador de tu portátil llega a IRIS mediante la conexión SSH.
+No necesitas abrir más puertos en AWS.
+
+<details>
+<summary>Conexiones de IRIS y puertos de los labs opcionales</summary>
+
+Python se conecta desde AWS a IRIS, normalmente con `IRIS_HOST=localhost`
+y `IRIS_PORT=1972`. La extensión ObjectScript remota utiliza normalmente
+`localhost:52773`, namespace `USER` y las credenciales facilitadas.
+La IP pública se utiliza para SSH.
+
+| Aplicación | Puerto remoto que debes reenviar |
 | --- | --- |
 | Portal de IRIS | `52773` |
 | FastAPI opcional | `8000` |
 | Gradio opcional | `7860` |
 
-FastAPI y Gradio sólo estarán disponibles después de arrancarlos en sus labs.
-Los notebooks usan el kernel remoto de VS Code y no necesitan un puerto Jupyter
-público. La conexión ObjectScript remota usa el host y credenciales facilitados,
-normalmente `localhost:52773` y namespace `USER`.
+FastAPI y Gradio deben estar arrancados en sus labs para poder abrirlos.
+Los notebooks usan el kernel remoto y no necesitan un puerto Jupyter público.
 
-## 8. Comprobar que puedes empezar
+</details>
 
-- La ventana de VS Code indica **SSH:** seguido de tu servidor.
-- La carpeta abierta es `/home/ubuntu/curso-ia-asistentes-iris`.
-- Los notebooks y la terminal usan `.venv`.
-- `docker compose ps` muestra `iris-aihub` en ejecución.
-- Tu clave OpenRouter está guardada en el `.env` remoto.
-- Puedes abrir el Portal mediante el puerto reenviado.
+## 6. ✅ Comprueba que puedes empezar
 
-Continúa con la sección [Comprobación del Lab 00](../labs/00-setup/README.md#comprobación).
-Si el instructor ya cargó los datos demo, no hace falta volver a cargarlos.
-La comprobación inicial no llama al modelo ni consume créditos de OpenRouter.
+- [ ] VS Code muestra **SSH:** y tu servidor en la esquina inferior izquierda.
+- [ ] Tienes abierta la carpeta `/home/ubuntu/curso-ia-asistentes-iris`.
+- [ ] La terminal y los notebooks usan `.venv`.
+- [ ] `docker compose ps` muestra `iris-aihub` en ejecución.
+- [ ] Has guardado tu clave en el `.env` remoto y aplicado la configuración.
+- [ ] Puedes abrir el Portal de IRIS.
 
-## Retomar el trabajo otro día
+Continúa con la [**Comprobación del Lab 00**](../labs/00-setup/README.md#comprobación).
+Esta prueba no llama al modelo ni consume créditos de OpenRouter.
+Si el instructor ya cargó los datos demo, no vuelvas a cargarlos.
 
-Conecta con **Remote-SSH: Connect to Host...** y elige tu servidor. Abre la misma carpeta
-y activa `.venv` si usas una terminal nueva. Reenvía los puertos si hace falta.
-Reutiliza `.env` y los datos existentes. No recrees el contenedor en cada sesión.
+---
 
-Cerrar VS Code no apaga la EC2. El instructor gestiona el encendido y apagado
-de las máquinas. Si cambia la IP pública, repite **Add New SSH Host...** con la
-IP nueva y el mismo `.pem`, y selecciona esa conexión al entrar.
+## ↩️ Cuando vuelvas otro día
 
-## Problemas habituales
+Conecta con **Remote-SSH: Connect to Host...**, abre la misma carpeta y activa
+`.venv` en cada terminal nueva. Reenvía los puertos si hace falta.
+Reutiliza `.env` y los datos. Si IRIS está detenido, ejecuta
+`docker compose up -d iris-aihub`. Si cambias tu API key, guarda `.env` y ejecuta
+ese mismo comando para aplicar el cambio. `start` o `restart` no incorporan
+variables nuevas.
 
-| Mensaje o síntoma | Qué comprobar |
+Cerrar VS Code no apaga tu máquina. El instructor gestiona su encendido y apagado.
+Si cambia la IP, añade una conexión con la IP nueva y el mismo `.pem`.
+
+## 🛠️ Si algo falla
+
+Busca tu síntoma en esta tabla. Al pedir ayuda, comparte el error sin incluir
+la clave OpenRouter ni el contenido del `.pem`.
+
+| Mensaje o síntoma | Qué hacer |
 | --- | --- |
-| `Connection timed out` | IP actual, máquina encendida, conexión de red y acceso TCP 22. Avisa al instructor si hay restricción por IP |
-| `Permission denied (publickey)` | Usuario `ubuntu`, `.pem` asignado y ruta introducida al añadir la conexión |
-| `UNPROTECTED PRIVATE KEY FILE` | Sigue el apartado Permisos de la clave |
-| Huella SSH distinta de una conexión anterior | Confirma con el instructor si se ha sustituido la máquina antes de modificar `known_hosts` |
-| Python no encuentra un paquete | Intérprete y kernel de `.venv` en la ventana remota |
-| Docker no está disponible o no permite ejecutar comandos | Avisa al instructor para revisar instalación y grupo del usuario |
-| Portal no responde | Contenedor en ejecución y puerto remoto `52773` reenviado. Usa el puerto local mostrado por VS Code |
-| OpenRouter rechaza la generación | Clave individual, saldo, modelo permitido y recreación del contenedor después de editar `.env` |
+| `Connection timed out` | Comprueba la IP y tu red. Pide al instructor que revise si la máquina está encendida y permite tu acceso por SSH (TCP 22) |
+| `Permission denied (publickey)` | Revisa el usuario, la ruta del `.pem` y que sea el archivo asignado |
+| `UNPROTECTED PRIVATE KEY FILE` | Sigue las instrucciones de permisos que aparecen debajo |
+| Huella SSH distinta de la anterior | Confirma con el instructor si se ha sustituido la máquina antes de modificar `known_hosts` |
+| Python no encuentra un paquete | Selecciona `.venv` como intérprete y como kernel del notebook |
+| Docker no está disponible o da un error de permisos | Avisa al instructor |
+| El Portal no responde | Comprueba que IRIS está en ejecución y que has reenviado `52773`. Usa el puerto local mostrado por VS Code |
+| OpenRouter rechaza la generación | Revisa la clave, el saldo y el modelo permitido. Si cambiaste `.env`, vuelve a aplicar la configuración del paso 4 |
 
-Al pedir ayuda, comparte el mensaje de error sin tu clave OpenRouter ni el
-contenido del `.pem`. Los detalles de conexión y reenvío de puertos están en
-la [documentación de VS Code Remote SSH](https://code.visualstudio.com/docs/remote/ssh).
+<details>
+<summary>Permisos de la clave .pem</summary>
 
-### Permisos de la clave
-
-Si SSH rechaza el `.pem` por tener permisos demasiado abiertos:
-
-**En macOS o Linux**, abre una terminal de tu portátil y ejecuta, con la ruta
+**En macOS o Linux**, abre una terminal de tu **portátil** y ejecuta con la ruta
 real del archivo:
 
 ```bash
 chmod 400 "/RUTA/COMPLETA/A/TU/CLAVE.pem"
 ```
 
-**En Windows**, abre las propiedades del `.pem` en el Explorador y entra en
-**Seguridad → Opciones avanzadas**. Restringe el acceso al archivo a tu cuenta.
+**En Windows**, abre las propiedades del `.pem` y entra en
+**Seguridad → Opciones avanzadas**. Restringe el acceso a tu cuenta.
 Si hereda permisos de otros usuarios o grupos, deshabilita la herencia y retira
-esos permisos. Si las políticas corporativas lo impiden, solicita ayuda al soporte.
+esos permisos. Si las políticas corporativas lo impiden, pide ayuda al soporte.
 
-Después vuelve a conectar desde VS Code.
+Vuelve a conectar desde VS Code.
 
-Si el error indica que no encuentra `ssh`, comprueba `ssh -V` en la terminal
-del portátil. En Windows, instala **OpenSSH Client** desde las características
-opcionales del sistema si falta, o solicita ayuda al soporte.
+</details>
+
+<details>
+<summary>No se encuentra el comando ssh</summary>
+
+Ejecuta `ssh -V` en una terminal de tu **portátil**.
+En Windows, si falta, instala **OpenSSH Client** desde las características
+opcionales del sistema o pide ayuda al soporte.
+
+</details>
+
+<details>
+<summary>Comprobar que Python encuentra la clave de OpenRouter</summary>
+
+Desde la carpeta del curso, en la terminal remota y con `.venv` activo:
+
+```bash
+python -c 'from dotenv import load_dotenv; import os; load_dotenv(".env"); print("Clave configurada:", bool(os.getenv("OPENROUTER_API_KEY")))'
+```
+
+`True` confirma que hay un valor sin mostrarlo. No verifica que la clave sea
+válida o tenga saldo. Las variables exportadas en la terminal tienen prioridad
+sobre `.env`. La prueba real de generación se hará cuando lo indique el lab o
+el instructor y consume créditos.
+
+</details>
+
+Más ayuda en la [documentación de VS Code Remote SSH](https://code.visualstudio.com/docs/remote/ssh).

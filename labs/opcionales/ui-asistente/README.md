@@ -77,7 +77,7 @@ flowchart TB
 Necesitas el corpus y el índice HNSW del [Lab 02](../../02-sql-vector-search/README.md),
 con IRIS arrancado. Reutiliza `.venv` y la conexión de `.env` del
 [Lab 00](../../00-setup/README.md). Para generar, reutiliza también la
-[configuración de OpenRouter](../../../docs/openrouter.md).
+[configuración de OpenRouter](../../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 
 Aquí añadirás una interfaz al RAG existente. No necesitas preparar agentes
 AI Hub ni instalar el adaptador REST opcional para usar Gradio o FastAPI.

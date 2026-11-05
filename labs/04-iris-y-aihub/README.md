@@ -128,13 +128,6 @@ Set response = agent.Chat(session, "¿Dónde está ORD-002?")
 Do ##class(Learning.Helper).PrintResponse(response.Content)
 ```
 
-La utilidad [Learning.Helper](../../src/Learning/Helper.cls) imprime cada línea desde el margen izquierdo, normalizando los saltos de línea para la terminal. No modifica `response.Content` ni interpreta Markdown, por lo que las marcas como `**negrita**` siguen visibles. Si ya tenías el curso cargado en IRIS, importa y compila la nueva clase desde la terminal en `USER` y después repite la impresión:
-
-```objectscript
-Do $System.Status.DisplayError($System.OBJ.Load("/app/src/Learning/Helper.cls", "ck"))
-Do ##class(Learning.Helper).PrintResponse(response.Content)
-```
-
 El agente usa OpenRouter con `openai/gpt-oss-20b` por defecto, igual que los Labs Python. Configura `OPENROUTER_API_KEY` y, si quieres otro modelo, `OPENROUTER_MODEL` en `.env`. Consulta [la configuración](../../docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris).
 
 La clave es opcional. Sin ella, el núcleo del lab —datos, ToolSet y política— sigue siendo completamente comprobable.

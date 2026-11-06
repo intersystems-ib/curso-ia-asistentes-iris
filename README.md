@@ -54,6 +54,8 @@ Si el instructor te ha asignado una máquina AWS, empieza por la [guía de acces
 
 Empieza por el [Lab 00 · Preparar el entorno](labs/00-setup/README.md). Allí se distingue entre una máquina facilitada por el instructor y una instalación en tu equipo. Prepararás `.env`, Docker, Python y los datos de ejemplo una sola vez para todo el curso.
 
+Si preparas el entorno en tu equipo, puedes encontrar la imagen de IRIS con AI Hub en el [Early Access Program (EAP) de InterSystems](https://www.intersystems.com/early-access-program/). Para seguir los labs, conserva la versión de la imagen indicada en la configuración Docker del curso.
+
 Si ya tienes el entorno listo, pasa al Lab 01. Cada lab indica sus requisitos y la preparación adicional que necesita. No necesitas reinstalar las dependencias base. Los comandos se ejecutan desde la raíz del repositorio, en la máquina donde está el entorno del curso.
 
 Para generar respuestas se utiliza OpenRouter con GPT-OSS 20B por defecto. Antes de empezar, sigue las [instrucciones para configurar tu clave](docs/guia-acceso-aws-alumno.md#4-añade-tu-clave-y-arranca-iris). Los embeddings se calculan localmente y las pruebas que no llaman al modelo pueden ejecutarse sin esa clave.
@@ -84,6 +86,11 @@ Puedes hacerlas después de los labs que se indican en cada una. No son necesari
 - [Interfaz del asistente](labs/opcionales/ui-asistente/README.md): una interfaz con Gradio y una API con FastAPI para el RAG de Python.
 
 Para el trabajo final, parte de [la plantilla de proyecto](plantillas-proyecto/proyecto-asistente/README.md) y consulta los [criterios de evaluación](docs/criterios-proyecto.md).
+
+## Recursos de AI Hub
+
+- [Ejemplos y documentación del EAP de AI Hub](https://github.com/intersystems-community/ai-hub-eap/).
+- [Comunidad de desarrolladores de InterSystems](https://community.intersystems.com): artículos, ejemplos y consultas de la comunidad.
 
 ## Conceptos principales
 

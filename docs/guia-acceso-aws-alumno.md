@@ -21,6 +21,23 @@ Descarga el `.pem` adjunto y guárdalo en tu portátil, fuera del repositorio. A
 
 El instructor te facilitará también las credenciales de IRIS.
 
+### En Windows: prepara los permisos de la clave
+
+Antes de conectar, abre **PowerShell en tu portátil** y ejecuta estos comandos en orden. Sustituye `tu-clave.pem` en las tres líneas por la ruta real del archivo descargado. Conserva las comillas, especialmente si la ruta contiene espacios.
+
+```powershell
+# 1. Restablecer los permisos por defecto
+icacls.exe "tu-clave.pem" /reset
+
+# 2. Dar permiso de lectura (R) a tu usuario actual
+icacls.exe "tu-clave.pem" /grant:r "$($env:USERNAME):(R)"
+
+# 3. Deshabilitar la herencia y quitar los permisos heredados
+icacls.exe "tu-clave.pem" /inheritance:r
+```
+
+Ejecuta estos comandos en PowerShell, no en el símbolo del sistema (`cmd`) ni en la terminal remota de AWS. Si las políticas corporativas impiden cambiar los permisos, pide ayuda al soporte.
+
 ---
 
 ## 1. Añade tu conexión en VS Code
@@ -87,7 +104,7 @@ VS Code guarda la conexión. No necesitas editar ese archivo ni seleccionar el d
 
 El entorno `.venv` ya está creado y tiene las dependencias instaladas. Sólo tienes que seleccionarlo y activarlo.
 
-1. Abre **Extensions**, busca `@recommended` e instala **Python**, **Jupyter** e **InterSystems ObjectScript** en el servidor **SSH:** cuando VS Code lo ofrezca. Remote - SSH se instala en el portátil.
+1. Instala las extensiones recomendadas cuando VS Code las sugiera. Si no aparece el aviso, abre la **paleta de comandos** y ejecuta **Extensions: Show Recommended Extensions**. También puedes abrir **Extensions** y buscar `@recommended`. Desde esa lista, instala **Python**, **Jupyter** e **InterSystems ObjectScript** en la máquina remota con **Install in SSH: …**. Remote - SSH se instala en el portátil.
 2. Ejecuta **Python: Select Interpreter** desde la paleta y selecciona esta ruta. Si no aparece, usa la opción para introducirla manualmente:
 
    ```text
@@ -210,7 +227,7 @@ Busca tu síntoma en esta tabla. Al pedir ayuda, comparte el error sin incluir l
 chmod 400 "/RUTA/COMPLETA/A/TU/CLAVE.pem"
 ```
 
-**En Windows**, abre las propiedades del `.pem` y entra en **Seguridad → Opciones avanzadas**. Restringe el acceso a tu cuenta. Si hereda permisos de otros usuarios o grupos, deshabilita la herencia y retira esos permisos. Si las políticas corporativas lo impiden, pide ayuda al soporte.
+**En Windows**, sigue los [comandos de PowerShell para preparar los permisos de la clave](#en-windows-prepara-los-permisos-de-la-clave).
 
 Vuelve a conectar desde VS Code.
 

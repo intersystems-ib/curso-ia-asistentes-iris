@@ -13,7 +13,7 @@ Todos los comandos de terminal del curso parten de la raíz del repositorio. Con
 
 ## Leer los labs en VS Code
 
-La copia pública incluye `.vscode/extensions.json` con las extensiones recomendadas. Abre Extensions y busca `@recommended` para verlas. VS Code puede sugerirlas al abrir la carpeta, pero no las instala automáticamente.
+La copia pública incluye `.vscode/extensions.json` con las extensiones recomendadas. VS Code puede sugerirlas al abrir la carpeta, pero no las instala automáticamente. Si no aparece el aviso, abre la paleta de comandos y ejecuta **Extensions: Show Recommended Extensions**. También puedes abrir **Extensions** y buscar `@recommended`. Desde esa lista puedes ir instalándolas. Con Remote SSH, instala **Python**, **Jupyter** e **InterSystems ObjectScript** en la máquina remota con **Install in SSH: …**.
 
 Para leer un README, usa **Markdown: Open Preview** desde la paleta de comandos. Markdown Preview Enhanced figura como recomendación opcional para la lectura. Si la vista previa integrada ya muestra los diagramas Mermaid, puedes usarla sin instalar esa extensión. Con Remote SSH, VS Code indica si cada extensión debe instalarse localmente o en la máquina remota.
 
